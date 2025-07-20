@@ -57,35 +57,16 @@
 
       <section v-if="activeSection === 'cardapio'" class="section-content">
         <h2>Nosso Cardápio</h2>
-        <div class="menu-items">
-          <h3>Pães</h3>
-          <ul>
-            <li>Pão Francês</li>
-            <li>Pão de Queijo</li>
-            <li>Pão Integral</li>
-            <li>Broa de Milho</li>
-          </ul>
-          <h3>Doces</h3>
-          <ul>
-            <li>Bolo de Cenoura com Chocolate</li>
-            <li>Sonho</li>
-            <li>Pudim de Leite</li>
-            <li>Torta de Limão</li>
-          </ul>
-          <h3>Salgados</h3>
-          <ul>
-            <li>Coxinha</li>
-            <li>Esfiha</li>
-            <li>Risole</li>
-            <li>Mini Pizza</li>
-          </ul>
-          <h3>Cafés e Bebidas</h3>
-          <ul>
-            <li>Café Expresso</li>
-            <li>Capuccino</li>
-            <li>Suco Natural</li>
-            <li>Refrigerante</li>
-          </ul>
+        <div class="carousel-container">
+          <img :src="menuImages[currentSlide]" :alt="'Cardápio ' + (currentSlide + 1)" class="carousel-slide" @click="openLightbox(currentSlide)">
+
+          <button @click="prevSlide" class="carousel-button prev">&#10094;</button>
+          <button @click="nextSlide" class="carousel-button next">&#10095;</button>
+          <div class="carousel-dots">
+            <span v-for="(image, index) in menuImages" :key="index"
+                  @click="goToSlide(index)"
+                  :class="{ active: index === currentSlide }" class="dot"></span>
+          </div>
         </div>
       </section>
 
@@ -170,22 +151,104 @@
       </div>
       <p class="copyright">&copy; {{ currentYear }} Padaria Famalicense. Todos os direitos reservados.</p>
     </footer>
+
+    <transition name="fade">
+      <div v-if="lightboxOpen" class="lightbox-overlay" @click.self="closeLightbox">
+        <div class="lightbox-content">
+          <button class="close-lightbox" @click="closeLightbox">&times;</button>
+          <button class="lightbox-nav-button prev" @click="lightboxPrev">&#10094;</button>
+          <img :src="menuImages[currentLightboxIndex]" :alt="'Cardápio ampliado ' + (currentLightboxIndex + 1)" class="lightbox-image">
+          <button class="lightbox-nav-button next" @click="lightboxNext">&#10095;</button>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+// Importar todas as imagens do cardápio
+import cardapio1 from '../assets/cardapio1.jpg';
+import cardapio2 from '../assets/cardapio2.jpg';
+import cardapio3 from '../assets/cardapio3.jpg';
+import cardapio4 from '../assets/cardapio4.jpg';
+import cardapio5 from '../assets/cardapio5.jpg';
+import cardapio6 from '../assets/cardapio6.jpg';
+import cardapio7 from '../assets/cardapio7.jpg';
+import cardapio8 from '../assets/cardapio8.jpg';
+import cardapio9 from '../assets/cardapio9.jpg';
+import cardapio10 from '../assets/cardapio10.jpg';
+import cardapio11 from '../assets/cardapio11.jpg';
+import cardapio12 from '../assets/cardapio12.jpg';
+
+
 export default {
   name: 'BakeryLandingPage',
   data() {
     return {
       activeSection: 'home',
       currentYear: new Date().getFullYear(),
+      menuImages: [
+        cardapio1, cardapio2, cardapio3, cardapio4,
+        cardapio5, cardapio6, cardapio7, cardapio8,
+        cardapio9, cardapio10, cardapio11, cardapio12
+      ],
+      currentSlide: 0, // Índice da imagem atual do carrossel na página
+      lightboxOpen: false, // Controla a visibilidade do lightbox
+      currentLightboxIndex: 0, // Índice da imagem atual no lightbox
     };
   },
   methods: {
     showSection(sectionName) {
       this.activeSection = sectionName;
     },
+    nextSlide() {
+      this.currentSlide = (this.currentSlide + 1) % this.menuImages.length;
+    },
+    prevSlide() {
+      this.currentSlide = (this.currentSlide - 1 + this.menuImages.length) % this.menuImages.length;
+    },
+    goToSlide(index) {
+      this.currentSlide = index;
+    },
+    openLightbox(index) {
+      this.currentLightboxIndex = index;
+      this.lightboxOpen = true;
+      // Impede o scroll do body quando o lightbox está aberto
+      document.body.style.overflow = 'hidden';
+    },
+    closeLightbox() {
+      this.lightboxOpen = false;
+      // Restaura o scroll do body
+      document.body.style.overflow = '';
+    },
+    lightboxNext() {
+      this.currentLightboxIndex = (this.currentLightboxIndex + 1) % this.menuImages.length;
+    },
+    lightboxPrev() {
+      this.currentLightboxIndex = (this.currentLightboxIndex - 1 + this.menuImages.length) % this.menuImages.length;
+    },
+     // Adiciona um listener para teclas (Esc para fechar, setas para navegar)
+    handleKeydown(event) {
+      if (this.lightboxOpen) {
+        if (event.key === 'Escape') {
+          this.closeLightbox();
+        } else if (event.key === 'ArrowRight') {
+          this.lightboxNext();
+        } else if (event.key === 'ArrowLeft') {
+          this.lightboxPrev();
+        }
+      }
+    },
+  },
+  mounted() {
+    // Adiciona o listener de evento de teclado quando o componente é montado
+    window.addEventListener('keydown', this.handleKeydown);
+  },
+  beforeUnmount() {
+    // Remove o listener de evento de teclado antes do componente ser destruído
+    window.removeEventListener('keydown', this.handleKeydown);
+    // Garante que o scroll do body seja restaurado se o componente for desmontado com o lightbox aberto
+    document.body.style.overflow = '';
   },
 };
 </script>
@@ -194,7 +257,7 @@ export default {
 #bakery-landing-page {
   font-family: Arial, sans-serif;
   color: #333;
-  background-color: #fff;
+  background-color: #fdf6e0;
   line-height: 1.6;
 }
 
@@ -205,7 +268,7 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 30px 20px;
-  background-color: #f8f8f8;
+  background-color: #fdf6e0;
   border-bottom: 1px solid #eee;
   min-height: 250px;
 }
@@ -301,7 +364,7 @@ export default {
 }
 
 .section-content {
-  background-color: #fff;
+  background-color: #fffaeb;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -345,25 +408,74 @@ export default {
   font-size: 1.05em;
 }
 
-/* Cardápio specific styles */
-.menu-items {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
+/* Carrossel styles */
+.carousel-container {
+  position: relative;
+  max-width: 550px; /* Ajuste conforme necessário */
+  margin: 20px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
-.menu-items ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.carousel-slide {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain; /* Revertido para 'contain' */
+  max-height: 750px; /* Aumentado para acomodar a altura do seu cardápio */
+  cursor: zoom-in; /* Indica que a imagem é clicável para ampliar */
 }
 
-.menu-items ul li {
-  background-color: #fdf5e6;
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
   padding: 10px 15px;
-  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 1.5em;
   border-radius: 5px;
-  border-left: 3px solid #F1C232;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.carousel-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.carousel-button.prev {
+  left: 10px;
+}
+
+.carousel-button.next {
+  right: 10px;
+}
+
+.carousel-dots {
+  text-align: center;
+  padding: 10px 0;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+}
+
+.dot {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: #bbb;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.dot.active {
+  background-color: #F1C232;
+  transform: scale(1.2);
 }
 
 /* Encomenda Form Styles */
@@ -515,24 +627,21 @@ export default {
   justify-content: center;
   gap: 30px;
   margin-top: 40px;
-  align-items: stretch; /* Garante que os cards tenham a mesma altura */
+  align-items: stretch;
 }
 
 .info-card {
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  /* overflow: hidden; foi removido na correção anterior para o selo */
   display: flex;
   flex-direction: column;
   position: relative;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   flex: 1;
   max-width: 450px;
-  /* min-height: 480px; Removido, pois align-items: stretch vai cuidar disso, ou ajustaremos por imagem/conteúdo */
 }
 
-/* Pseudo-elemento para o efeito de hover de esbranquiçamento */
 .info-card::before {
   content: '';
   position: absolute;
@@ -562,29 +671,26 @@ export default {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Wrapper para a imagem dentro do card */
 .info-card-image-wrapper {
-  height: 200px; /* **NOVO:** Altura fixa para as imagens dos cards */
+  height: 200px;
   position: relative;
-  overflow: hidden; /* Mantido para que o gradiente fique dentro */
+  overflow: hidden;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 
-/* Imagens de fundo para cada wrapper de imagem */
 .info-card.music-card .info-card-image-wrapper {
   background-image: url('../assets/violao.jpg');
   background-size: cover;
-  background-position: center; /* **NOVO/CONFIRMADO:** Centraliza a imagem no wrapper */
+  background-position: center;
 }
 
 .info-card.delivery-card .info-card-image-wrapper {
   background-image: url('../assets/delivery.jpg');
   background-size: cover;
-  background-position: center; /* **NOVO/CONFIRMADO:** Centraliza a imagem no wrapper */
+  background-position: center;
 }
 
-/* Gradiente de esmaecimento na parte inferior da imagem */
 .image-gradient-overlay {
   position: absolute;
   bottom: 0;
@@ -602,10 +708,9 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   background-color: white;
-  padding-top: 10px; /* Pequeno espaçamento entre a imagem e o texto */
+  padding-top: 10px;
 }
 
-/* Ajustes específicos para o card de música para melhorar a visualização */
 .info-card.music-card .card-content {
   padding: 20px;
   padding-top: 10px;
@@ -714,12 +819,10 @@ export default {
 
   .info-card {
     max-width: 90%;
-    /* min-height: auto; Removido */
   }
 
-  /* Em telas menores, a altura da imagem pode ser ajustada */
   .info-card-image-wrapper {
-    height: 180px; /* Altura fixa para a imagem em mobile */
+    height: 180px;
   }
 
   .card-content {
@@ -727,7 +830,6 @@ export default {
     padding: 20px;
   }
 
-  /* Ajustes específicos para o card de música em mobile */
   .info-card.music-card .card-content h3 {
     font-size: 1.5em;
   }
@@ -747,6 +849,13 @@ export default {
     transform: rotate(5deg);
   }
 
+  .carousel-slide {
+    max-height: 400px; /* Ajusta a altura da imagem do carrossel em telas menores */
+  }
+  .carousel-button {
+    padding: 8px 12px;
+    font-size: 1.2em;
+  }
 }
 
 @media (max-width: 480px) {
@@ -774,7 +883,6 @@ export default {
         height: 150px;
     }
 
-    /* Ajustes específicos para o card de música em telas muito pequenas */
     .info-card.music-card .card-content h3 {
       font-size: 1.3em;
     }
@@ -787,5 +895,132 @@ export default {
     .info-card.music-card .card-content .website-link {
       font-size: 0.8em;
     }
+    .carousel-slide {
+        max-height: 300px; /* Ajusta a altura da imagem do carrossel em telas muito pequenas */
+    }
+    .carousel-button {
+        padding: 6px 10px;
+        font-size: 1em;
+    }
+    .dot {
+        height: 10px;
+        width: 10px;
+    }
+}
+
+/* Lightbox/Modal Styles */
+.lightbox-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* Fundo semi-transparente escuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Garante que fique acima de todo o conteúdo */
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%; /* Limita a largura do conteúdo do lightbox */
+  max-height: 90%; /* Limita a altura do conteúdo do lightbox */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 90vh; /* Ocupa até 90% da altura da viewport */
+  object-fit: contain; /* Garante que a imagem inteira seja visível */
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5em;
+  cursor: pointer;
+  z-index: 10000; /* Acima da imagem e botões de navegação */
+  transition: color 0.3s ease;
+}
+
+.close-lightbox:hover {
+  color: #F1C232;
+}
+
+.lightbox-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 2em;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  z-index: 10000;
+}
+
+.lightbox-nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-nav-button.prev {
+  left: 20px;
+}
+
+.lightbox-nav-button.next {
+  right: 20px;
+}
+
+/* Transições para o lightbox */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* Responsividade para o lightbox */
+@media (max-width: 768px) {
+  .lightbox-nav-button {
+    padding: 10px 15px;
+    font-size: 1.5em;
+  }
+  .close-lightbox {
+    font-size: 2em;
+    top: 10px;
+    right: 10px;
+  }
+  .lightbox-nav-button.prev {
+    left: 10px;
+  }
+  .lightbox-nav-button.next {
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lightbox-image {
+    max-height: 85vh; /* Ainda menor em telas muito pequenas */
+  }
+  .lightbox-nav-button {
+    padding: 8px 12px;
+    font-size: 1.2em;
+  }
+  .close-lightbox {
+    font-size: 1.8em;
+  }
 }
 </style>
