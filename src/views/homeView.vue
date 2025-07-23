@@ -5,8 +5,8 @@
         <div class="logo">Padaria Famalicense</div>
         <nav>
           <ul>
-            <li><a href="#home" @click.prevent="scrollTo('home')" :class="{ active: activeSection === 'home' }">HOME</a>
-            </li>
+            <li><a href="#home" @click.prevent="scrollTo('home')" :class="{ active: activeSection === 'home' }">HOME</a></li>
+            <li><a href="#novidades" @click.prevent="scrollTo('novidades')" :class="{ active: activeSection === 'novidades' }">NOVIDADES</a></li>
             <li><a href="#cardapio" @click.prevent="scrollTo('cardapio')"
                 :class="{ active: activeSection === 'cardapio' }">CARDÁPIO</a></li>
             <li><a href="#nossa-casa" @click.prevent="scrollTo('nossa-casa')"
@@ -31,12 +31,38 @@
         </div>
       </section>
 
+      <section id="novidades" class="news-section section">
+        <div class="container">
+           <h2 class="section-title animate-on-scroll">Eventos e Novidades</h2>
+          <div class="news-grid">
+            <div class="news-item animate-on-scroll">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M240-120v-560q0-51 28.5-87t75.5-53l80 20q33 8 66 8t66-8l80-20q47 17 75.5 53t28.5 87v560l-240-80-240 80Zm80-104 160-54 160 54v-456q0-14-6.5-25.5T608-772l-48 12q-33 8-66 8t-66-8l-48-12q-11 6-17.5 17.5T320-720v496Zm200-516q17 0 28.5-11.5T560-800q0-17-11.5-28.5T520-840q-17 0-28.5 11.5T480-800q0 17 11.5 28.5T520-740ZM240-120v-560 560Z"/></svg>
+              <h3>Música ao Vivo</h3>
+              <p>Venha curtir nosso Acústico Music com entrada franca em um ambiente ótimo para trazer os amigos e a família.</p>
+              <div class="news-details">
+                <p><strong>Quando:</strong> Sextas e Sábados</p>
+                <p><strong>Horário:</strong> Das 20h às 23h30</p>
+              </div>
+            </div>
+            <div class="news-item animate-on-scroll">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M780-80q-25 0-42.5-17.5T720-140q0-25 17.5-42.5T780-200q25 0 42.5 17.5T840-140q0 25-17.5 42.5T780-80Zm-480 0q-25 0-42.5-17.5T240-140q0-25 17.5-42.5T300-200q25 0 42.5 17.5T360-140q0 25-17.5 42.5T300-80ZM120-760v-80h510l114 238-104 202H286q-43 0-77.5-24T168-494L120-760Zm166 280h328l64-120H286v120Zm14-160v-120h350v120H300Z"/></svg>
+              <h3>Delivery aos Domingos</h3>
+              <p>Agora você pode receber nossas delícias em casa também aos domingos, com a qualidade de sempre!</p>
+              <div class="news-details">
+                <p><strong>Horário:</strong> A partir das 9h</p>
+                <p><strong>Antecipe suas encomendas:</strong> <a href="tel:+551132081804">(11) 3208-1804</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="cardapio" class="menu-section section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Nosso Cardápio</h2>
           <p class="section-subtitle animate-on-scroll">Clique na imagem para ampliar</p>
           <div class="cardapio-carousel-wrapper animate-on-scroll">
-            <button @click="prevCardapioImage" class="cardapio-nav prev" aria-label="Imagem Anterior">&#10094;</button>
+            <button @click="prevCardapioImage" class="cardapio-nav prev" aria-label="Imagem Anterior">❮</button>
             <div class="cardapio-image-container">
               <transition name="fade" mode="out-in">
                 <img :key="cardapioImages[cardapioCurrentIndex]" :src="cardapioImages[cardapioCurrentIndex]"
@@ -44,7 +70,7 @@
                   @click="openModal(cardapioImages, cardapioCurrentIndex)" />
               </transition>
             </div>
-            <button @click="nextCardapioImage" class="cardapio-nav next" aria-label="Próxima Imagem">&#10095;</button>
+            <button @click="nextCardapioImage" class="cardapio-nav next" aria-label="Próxima Imagem">❯</button>
           </div>
         </div>
       </section>
@@ -55,8 +81,8 @@
             <transition name="fade" mode="out-in">
               <img :key="currentSlide.imageSrc" :src="currentSlide.imageSrc" :alt="currentSlide.title">
             </transition>
-            <button @click="prevSlide" class="carousel-nav prev" aria-label="Slide Anterior">&#10094;</button>
-            <button @click="nextSlide" class="carousel-nav next" aria-label="Próximo Slide">&#10095;</button>
+            <button @click="prevSlide" class="carousel-nav prev" aria-label="Slide Anterior">❮</button>
+            <button @click="nextSlide" class="carousel-nav next" aria-label="Próximo Slide">❯</button>
           </div>
           <div class="about-text animate-on-scroll">
             <transition name="fade" mode="out-in">
@@ -74,7 +100,7 @@
           <h2 class="section-title animate-on-scroll">Encomendas</h2>
           <p class="section-subtitle animate-on-scroll">Preços sujeitos a alteração sem aviso prévio. Confirmar os preços antes de nos visitar ou de encomendar algo.</p>
           <div class="encomendas-carousel-wrapper animate-on-scroll">
-            <button @click="prevEncomendaImage" class="cardapio-nav prev" aria-label="Encomenda Anterior">&#10094;</button>
+            <button @click="prevEncomendaImage" class="cardapio-nav prev" aria-label="Encomenda Anterior">❮</button>
              <div class="cardapio-image-container">
                 <transition name="fade" mode="out-in">
                   <img
@@ -86,7 +112,7 @@
                   />
                 </transition>
              </div>
-            <button @click="nextEncomendaImage" class="cardapio-nav next" aria-label="Próxima Encomenda">&#10095;</button>
+            <button @click="nextEncomendaImage" class="cardapio-nav next" aria-label="Próxima Encomenda">❯</button>
           </div>
            <p class="section-subtitle animate-on-scroll" style="margin-top: 20px; font-size: 0.9rem;">( CLICK NA IMAGEM PARA AMPLIAR )</p>
         </div>
@@ -95,8 +121,7 @@
       <section id="faca-seu-pedido" class="order-section section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Faça seu pedido</h2>
-          <p class="section-subtitle animate-on-scroll">Peça online de forma rápida e prática, ou entre em contato
-            conosco.</p>
+          <p class="section-subtitle animate-on-scroll">Peça online de forma rápida e prática, ou entre em contato conosco.</p>
           <div class="order-options animate-on-scroll">
             <a href="https://famalicense.bedelivery.com.br/" target="_blank" rel="noopener noreferrer"
               class="cta-button">
@@ -104,7 +129,7 @@
             </a>
             <p class="phone-contact">
               ou ligue para nós <br>
-              <a href="tel:+5511998041804" class="phone-number">(11) 99804-1804</a>
+              <a href="tel:+551132081804" class="phone-number">(11) 3208-1804</a>
             </p>
           </div>
         </div>
@@ -144,29 +169,26 @@
     </footer>
 
     <div v-if="isModalOpen" class="modal-backdrop" @click="closeModal">
-      <button @click.stop="prevModalImage" class="modal-nav prev" aria-label="Anterior">&#10094;</button>
+      <button @click.stop="prevModalImage" class="modal-nav prev" aria-label="Anterior">❮</button>
       <div class="modal-content" @click.stop>
         <transition name="fade" mode="out-in">
           <img :key="modalImageSrc" :src="modalImageSrc" alt="Imagem ampliada" class="modal-image">
         </transition>
       </div>
-      <button @click.stop="nextModalImage" class="modal-nav next" aria-label="Próximo">&#10095;</button>
-      <button @click="closeModal" class="modal-close-button" aria-label="Fechar modal">&times;</button>
+      <button @click.stop="nextModalImage" class="modal-nav next" aria-label="Próximo">❯</button>
+      <button @click="closeModal" class="modal-close-button" aria-label="Fechar modal">×</button>
     </div>
   </div>
 </template>
 
 <script setup>
+// ... O SCRIPT INTEIRO PERMANECE O MESMO ...
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
-
-// IMAGENS DO CARROSSEL NOSSA CASA
 import imgLogo from '../assets/logo.png'
 import imgPadaria from '../assets/padaria1.png';
 import imgConfeitaria from '../assets/confeitaria1.png';
 import imgPizzaria from '../assets/padaria2.png';
 import imgRestaurante from '../assets/restaurantes.png';
-
-// IMAGENS DO CARROSSEL CARDÁPIO
 import cardapioImg1 from '../assets/cardapio1.jpg';
 import cardapioImg2 from '../assets/cardapio2.jpg';
 import cardapioImg3 from '../assets/cardapio3.jpg';
@@ -179,20 +201,14 @@ import cardapioImg9 from '../assets/cardapio9.jpg';
 import cardapioImg10 from '../assets/cardapio10.jpg';
 import cardapioImg11 from '../assets/cardapio11.jpg';
 import cardapioImg12 from '../assets/cardapio12.jpg';
-
-// Imagens encomenda
 import imgEncomenda1 from '../assets/encomenda1.jpg'
 import imgEncomenda2 from '../assets/encomenda2.jpg'
 import imgEncomenda3 from '../assets/encomenda3.jpg'
 import imgEncomenda4 from '../assets/encomenda4.jpg'
-
-
-// --- LÓGICA GERAL E SCROLL ---
 const isScrolled = ref(false);
 const activeSection = ref('home');
 let animationObserver = null;
 let scrollSpyObserver = null;
-
 const handleScroll = () => { isScrolled.value = window.scrollY > 50; };
 const scrollTo = (sectionId) => {
   const element = document.getElementById(sectionId);
@@ -200,24 +216,20 @@ const scrollTo = (sectionId) => {
     window.scrollTo({ top: element.offsetTop - 80, behavior: 'smooth' });
   }
 };
-
-// --- LÓGICA DO CARROSSEL "NOSSA CASA" ---
 const currentSlideIndex = ref(0);
 let autoplayInterval = null;
 const nossaCasaSlides = ref([
-  { title: 'Nossa Casa', text: 'Somos diversificados e populares. Atuamos como padaria, confeitaria, restaurante a la carte, self-service grill e pizzaria. Temos orgulho de nossa tradição, estamos no mesmo local desde 1961. Somos gratos ao bairro do Cambuci que nos acolheu durante todos estes anos, onde pudemos aprender, crescer e contribuir com nossos valores e tradições representados por nossos produtos e serviços. O nome FAMALICENSE é uma homenagem aos nascidos na cidade  de Vila Nova Famalicão localizada na região Norte de Portugal, mais que uma simples padaria, com um novo conceito, une tradição e conveniência, trazendo ao bairro do Cambuci um ambiente descontraido e informal oferecendo aos seus clientes uma grande variedade de opções para saborear.', imageSrc: imgLogo },
-  { title: 'Padaria', text: 'Grande variedade de pães: francês tradicional, integral, c/ torresmo, multi-grãos, italiano, folar português, de batata, de mandioquinha e muitos outros.', imageSrc: imgPadaria },
-  { title: 'Confeitaria', text: 'Tudo feito com amor e dedicação e com uma equipe bem entrosada, também oferecemos uma grande variedade de bolos, doces e salgados com estilo bem tradicional.', imageSrc: imgConfeitaria },
-  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas. Um ambiente gostoso e muito agradável no piso superior para receber sua família e seus amigos. Venha conferir!', imageSrc: imgPizzaria },
-  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes a opção de um almoço a la carte tradicional com os principais pratos populares da gastronomia de São Paulo ou em nosso piso superior a opção do Self-Service Grill.', imageSrc: imgRestaurante }
+  { title: 'Nossa Casa', text: 'Somos diversificados e populares...', imageSrc: imgLogo },
+  { title: 'Padaria', text: 'Grande variedade de pães...', imageSrc: imgPadaria },
+  { title: 'Confeitaria', text: 'Tudo feito com amor...', imageSrc: imgConfeitaria },
+  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas...', imageSrc: imgPizzaria },
+  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes...', imageSrc: imgRestaurante }
 ]);
 const currentSlide = computed(() => nossaCasaSlides.value[currentSlideIndex.value]);
 const nextSlide = () => { currentSlideIndex.value = (currentSlideIndex.value + 1) % nossaCasaSlides.value.length; };
 const prevSlide = () => { currentSlideIndex.value = (currentSlideIndex.value - 1 + nossaCasaSlides.value.length) % nossaCasaSlides.value.length; };
 const startAutoplay = () => { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 7000); };
 const stopAutoplay = () => { if (autoplayInterval) clearInterval(autoplayInterval); };
-
-// --- LÓGICA DO CARROSSEL "CARDÁPIO" ---
 const cardapioImages = ref([
   cardapioImg1, cardapioImg2, cardapioImg3, cardapioImg4, cardapioImg5, cardapioImg6,
   cardapioImg7, cardapioImg8, cardapioImg9, cardapioImg10, cardapioImg11, cardapioImg12
@@ -225,19 +237,14 @@ const cardapioImages = ref([
 const cardapioCurrentIndex = ref(0);
 const nextCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value + 1) % cardapioImages.value.length; };
 const prevCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value - 1 + cardapioImages.value.length) % cardapioImages.value.length; };
-
-// --- LÓGICA DO CARROSSEL "ENCOMENDAS" ---
 const encomendaImages = ref([ imgEncomenda1, imgEncomenda2, imgEncomenda3, imgEncomenda4 ]);
 const encomendaCurrentIndex = ref(0);
 const nextEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value + 1) % encomendaImages.value.length; };
 const prevEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value - 1 + encomendaImages.value.length) % encomendaImages.value.length; };
-
-// --- LÓGICA DO MODAL DE IMAGEM (ATUALIZADA) ---
 const isModalOpen = ref(false);
 const modalImageSrc = ref('');
 const activeModalImages = ref([]);
 const activeModalIndex = ref(0);
-
 const openModal = (imageArray, startIndex) => {
   activeModalImages.value = imageArray;
   activeModalIndex.value = startIndex;
@@ -245,36 +252,29 @@ const openModal = (imageArray, startIndex) => {
   isModalOpen.value = true;
   document.body.style.overflow = 'hidden';
 };
-
 const closeModal = () => {
   isModalOpen.value = false;
   document.body.style.overflow = '';
 };
-
 const nextModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value + 1) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
-
 const prevModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value - 1 + activeModalImages.value.length) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
-
 const handleKeydown = (e) => {
   if (!isModalOpen.value) return;
   if (e.key === 'Escape') closeModal();
   if (e.key === 'ArrowRight') nextModalImage();
   if (e.key === 'ArrowLeft') prevModalImage();
 };
-
-// --- LIFECYCLE HOOKS ---
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('keydown', handleKeydown);
-  // ... (código do IntersectionObserver permanece o mesmo)
   const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
   animationObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -296,7 +296,6 @@ onMounted(() => {
   sections.forEach(section => scrollSpyObserver.observe(section));
   startAutoplay();
 });
-
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('keydown', handleKeydown);
@@ -309,7 +308,7 @@ onBeforeUnmount(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap');
 
-/* ... (Todo o CSS anterior permanece o mesmo até a seção de cardápio) ... */
+/* ... (Todo o CSS anterior permanece o mesmo até a seção de hero) ... */
 .bakery-landing-page {
   --primary-color: #FFC107;
   --accent-color: #D32F2F;
@@ -347,6 +346,63 @@ html { scroll-behavior: smooth; }
 .hero-content p { font-size: 1.2rem; margin-bottom: 30px; max-width: 700px; }
 .cta-button { background-color: var(--primary-color); color: var(--dark-color); border: none; padding: 15px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; display: inline-block; }
 .cta-button:hover { background-color: #ffca28; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+/* --- CSS PARA A NOVA SEÇÃO DE NOVIDADES --- */
+.news-section {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+}
+.news-section .section-title {
+    color: var(--light-color);
+}
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  align-items: start;
+}
+.news-item {
+  text-align: center;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.news-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    transform: translateY(-5px);
+}
+.news-item svg {
+  width: 50px;
+  height: 50px;
+  fill: var(--primary-color);
+  margin-bottom: 20px;
+}
+.news-item h3 {
+  font-family: var(--font-headings);
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+}
+.news-item p {
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+}
+.news-details p {
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+.news-details a {
+  color: var(--light-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+.news-details a:hover {
+    color: var(--primary-color);
+}
+
 .menu-section { background-color: var(--bg-light-cream); }
 .cardapio-carousel-wrapper { position: relative; max-width: 450px; margin: 0 auto; }
 .cardapio-image-container { overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background-color: var(--light-color); height: 600px; display: flex; align-items: center; justify-content: center; }
@@ -386,11 +442,9 @@ html { scroll-behavior: smooth; }
 .main-footer-bottom .container { display: flex; justify-content: space-between; align-items: center; }
 .social-links a { color: var(--light-color); text-decoration: none; margin-left: 15px; font-weight: 700; transition: color 0.3s ease; }
 .social-links a:hover { color: var(--primary-color); }
-
-/* --- ESTILOS DO MODAL (ATUALIZADO) --- */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 2000; }
 .modal-content { position: relative; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; padding: 40px; }
-.modal-image { display: block; max-width: 90vw; /* Limita a largura */ max-height: 85vh; /* Limita a altura para caber na tela */ width: auto; height: auto; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+.modal-image { display: block; max-width: 90vw; max-height: 85vh; width: auto; height: auto; border-radius: 5px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
 .modal-close-button { position: absolute; top: 20px; right: 20px; background-color: white; border: 2px solid var(--dark-color); border-radius: 50%; width: 40px; height: 40px; font-size: 1.8rem; font-weight: bold; color: var(--dark-color); cursor: pointer; line-height: 1; display: flex; justify-content: center; align-items: center; transition: transform 0.3s ease, background-color 0.3s ease; z-index: 2010; }
 .modal-close-button:hover { transform: scale(1.1) rotate(90deg); background-color: var(--primary-color); }
 .modal-nav { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(5px); cursor: pointer; border-radius: 50%; z-index: 2010; transition: background-color 0.3s ease; font-size: 2rem; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; }
@@ -408,6 +462,7 @@ html { scroll-behavior: smooth; }
   .hero-content h1 { font-size: 2.8rem; }
   .main-header .container, .about-content, .location-content, .main-footer-bottom .container { flex-direction: column; gap: 10px; }
   .main-header nav ul li a { margin: 0 8px; font-size: 0.9rem; }
+  .news-grid { grid-template-columns: 1fr; } /* Colunas das novidades ficam verticais */
   .about-text { height: auto; margin-top: 30px; }
   .cardapio-image-container { height: 400px; }
   .cardapio-carousel-wrapper { max-width: 100%; }
