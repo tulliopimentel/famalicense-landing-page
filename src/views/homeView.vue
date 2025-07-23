@@ -18,8 +18,8 @@
     <main>
       <section id="home" class="hero-section section">
         <div class="hero-content">
-          <h1 class="animate-on-scroll">Sabor e tradição em cada pedaço</h1>
-          <p class="animate-on-scroll">Pão fresquinho e produtos artesanais feitos com amor para você e sua família.</p>
+          <h1 class="animate-on-scroll">Qualidade e tradição desde 1961</h1>
+          <p class="animate-on-scroll">Qualidade, sabor, variedade e tradição você encontra na Famalicense. Aqui tem pães deliciosos, tudo de confeitaria, almoço diversificado, pizzaria e uma cerveja sempre geladinha.  Traga sua família e amigos para provar nossas saborosas pizzas, salgados e refeições. Você irá se apaixonar.</p>
           <button @click="scrollTo('cardapio')" class="cta-button animate-on-scroll">Veja nosso Cardápio</button>
         </div>
       </section>
@@ -50,33 +50,40 @@
 
       <section id="nossa-casa" class="about-section section">
         <div class="container about-content">
+          
           <div class="about-image animate-on-scroll">
-            <img src="https://images.unsplash.com/photo-1556909172-6ab63f18fd12?q=80&w=2940&auto=format&fit=crop" alt="Interior da Padaria">
+            <transition name="fade" mode="out-in">
+              <img :key="currentSlide.imageSrc" :src="currentSlide.imageSrc" :alt="currentSlide.title">
+            </transition>
+            <button @click="prevSlide" class="carousel-nav prev" aria-label="Slide Anterior">&#10094;</button>
+            <button @click="nextSlide" class="carousel-nav next" aria-label="Próximo Slide">&#10095;</button>
           </div>
+
           <div class="about-text animate-on-scroll">
-            <h2 class="section-title">Nossa Casa</h2>
-            <p>Desde 1985, a Padaria Famalicense é um ponto de encontro no bairro. Uma história de família que começou com o sonho de levar à mesa das pessoas pães de qualidade, feitos com carinho e os melhores ingredientes. Aqui, cada receita tem uma história e cada cliente faz parte da nossa família.</p>
+            <transition name="fade" mode="out-in">
+              <div :key="currentSlide.title">
+                <h2 class="section-title">{{ currentSlide.title }}</h2>
+                <p>{{ currentSlide.text }}</p>
+              </div>
+            </transition>
           </div>
+
         </div>
       </section>
 
       <section id="encomendas" class="order-section section">
         <div class="container">
-          <h2 class="section-title animate-on-scroll">Faça sua Encomenda</h2>
-          <p class="section-subtitle animate-on-scroll">Planejando uma festa ou um café da manhã especial? Encomende conosco!</p>
-          <form class="order-form animate-on-scroll" @submit.prevent>
-            <div class="form-group">
-              <input type="text" placeholder="Seu Nome" required>
-              <input type="tel" placeholder="Seu Telefone / WhatsApp" required>
-            </div>
-            <div class="form-group">
-              <input type="email" placeholder="Seu E-mail" required>
-            </div>
-            <div class="form-group">
-              <textarea placeholder="Descreva sua encomenda (produtos, quantidades, data de retirada)..." rows="5" required></textarea>
-            </div>
-            <button type="submit" class="cta-button">Enviar Pedido</button>
-          </form>
+          <h2 class="section-title animate-on-scroll">Faça seu pedido</h2>
+          <p class="section-subtitle animate-on-scroll">Peça online de forma rápida e prática, ou entre em contato conosco.</p>
+          <div class="order-options animate-on-scroll">
+            <a href="https://famalicense.bedelivery.com.br/" target="_blank" rel="noopener noreferrer" class="cta-button">
+              Pedir Online via BeDelivery
+            </a>
+            <p class="phone-contact">
+              ou ligue para nós <br>
+              <a href="tel:+5511998041804" class="phone-number">(11) 99804-1804</a>
+            </p>
+          </div>
         </div>
       </section>
 
@@ -87,11 +94,12 @@
           <div class="location-content">
             <div class="address-info animate-on-scroll">
               <h3>Padaria Famalicense</h3>
-              <p>Rua do Sabor, 123 - Bairro dos Pães</p>
-              <p>São Paulo, SP - CEP 01234-567</p>
+              <p>R. Climaco barbosa, 46 - Cambuci</p>
+              <p>São Paulo, SP - CEP 01523-000</p>
               <p><strong>Horário de Funcionamento:</strong></p>
-              <p>Segunda a Sábado: 6h às 22h</p>
-              <p>Domingos e Feriados: 7h às 20h</p>
+              <p>Segunda a Quinta: 6h às 22h</p>
+              <p>Sexta e Sábado: 6h às 00h</p>
+              <p>Domingos e feriados: 6h às 22h</p>
             </div>
             <div class="map-container animate-on-scroll">
               <iframe
@@ -123,7 +131,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+
+import imgLogo from '../assets/logo.png'
+import imgPadaria from '../assets/padaria1.png';
+import imgConfeitaria from '../assets/confeitaria1.png';
+import imgPizzaria from '../assets/padaria2.png';
+import imgRestaurante from '../assets/restaurantes.png';
+
 
 // --- LÓGICA PARA O HEADER ---
 const isScrolled = ref(false);
@@ -143,7 +158,7 @@ const scrollTo = (sectionId) => {
 };
 
 
-// --- LÓGICA DE ANIMAÇÃO E SCROLL-SPY (CORRIGIDA) ---
+// --- LÓGICA DE ANIMAÇÃO E SCROLL-SPY ---
 const activeSection = ref('home');
 let animationObserver = null;
 let scrollSpyObserver = null;
@@ -151,21 +166,17 @@ let scrollSpyObserver = null;
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 
-  // Observador para as ANIMAÇÕES de conteúdo
   const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
   animationObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
-        animationObserver.unobserve(entry.target); // Opcional: para de observar depois de animar
+        animationObserver.unobserve(entry.target);
       }
     });
   }, { threshold: 0.1 });
-
   elementsToAnimate.forEach(el => animationObserver.observe(el));
 
-
-  // Observador para o SCROLL-SPY (destaque do menu)
   const sections = document.querySelectorAll('.section');
   scrollSpyObserver = new IntersectionObserver((entries) => {
      entries.forEach(entry => {
@@ -174,32 +185,83 @@ onMounted(() => {
         }
      });
   }, { threshold: [0.5, 0.9] });
-
   sections.forEach(section => scrollSpyObserver.observe(section));
-
+  
+  startAutoplay();
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
-  if (animationObserver) {
-    animationObserver.disconnect();
-  }
-  if (scrollSpyObserver) {
-    scrollSpyObserver.disconnect();
-  }
+  if (animationObserver) animationObserver.disconnect();
+  if (scrollSpyObserver) scrollSpyObserver.disconnect();
+  stopAutoplay();
 });
+
+// --- LÓGICA DO CARROSSEL "NOSSA CASA" ---
+const currentSlideIndex = ref(0);
+let autoplayInterval = null;
+
+// --- 2. USAR AS VARIÁVEIS IMPORTADAS NO LUGAR DOS TEXTOS ---
+const nossaCasaSlides = ref([
+  {
+    title: 'Nossa Casa',
+    text: 'Somos diversificados e populares. Atuamos como padaria, confeitaria, restaurante a la carte, self-service grill e pizzaria. Temos orgulho de nossa tradição, estamos no mesmo local desde 1961. Somos gratos ao bairro do Cambuci que nos acolheu durante todos estes anos, onde pudemos aprender, crescer e contribuir com nossos valores e tradições representados por nossos produtos e serviços. O nome FAMALICENSE é uma homenagem aos nascidos na cidade  de Vila Nova Famalicão localizada na região Norte de Portugal, mais que uma simples padaria, com um novo conceito, une tradição e conveniência, trazendo ao bairro do Cambuci um ambiente descontraido e informal oferecendo aos seus clientes uma grande variedade de opções para saborear.',
+    imageSrc: imgLogo
+  },
+  {
+    title: 'Padaria',
+    text: 'Grande variedade de pães: francês tradicional, integral, c/ torresmo, multi-grãos, italiano, folar português, de batata, de mandioquinha e muitos outros.',
+    imageSrc: imgPadaria
+  },
+  {
+    title: 'Confeitaria',
+    text: 'Tudo feito com amor e dedicação e com uma equipe bem entrosada, também oferecemos uma grande variedade de bolos, doces e salgados com estilo bem tradicional.',
+    imageSrc: imgConfeitaria
+  },
+  {
+    title: 'Pizzaria',
+    text: 'Temos uma grande variedade de pizzas. Um ambiente gostoso e muito agradável no piso superior para receber sua família e seus amigos. Venha conferir!',
+    imageSrc: imgPizzaria
+  },
+  {
+    title: 'Restaurante',
+    text: 'Oferecemos aos nossos clientes a opção de um almoço a la carte tradicional com os principais pratos populares da gastronomia de São Paulo ou em nosso piso superior a opção do Self-Service Grill.',
+    imageSrc: imgRestaurante
+  }
+]);
+
+const currentSlide = computed(() => nossaCasaSlides.value[currentSlideIndex.value]);
+
+const nextSlide = () => {
+  currentSlideIndex.value = (currentSlideIndex.value + 1) % nossaCasaSlides.value.length;
+};
+
+const prevSlide = () => {
+  currentSlideIndex.value = (currentSlideIndex.value - 1 + nossaCasaSlides.value.length) % nossaCasaSlides.value.length;
+};
+
+const startAutoplay = () => {
+  stopAutoplay(); 
+  autoplayInterval = setInterval(nextSlide, 7000);
+};
+
+const stopAutoplay = () => {
+  if (autoplayInterval) {
+    clearInterval(autoplayInterval);
+  }
+};
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap');
 
 .bakery-landing-page {
-  --primary-color: #FFC107;  /* Amarelo Âmbar */
-  --accent-color: #D32F2F;   /* Vermelho do "HOME" */
+  --primary-color: #FFC107;
+  --accent-color: #D32F2F;
   --dark-color: #333;
   --light-color: #FFF;
   --bg-light-cream: #FFF8E1;
-  --text-color: #5D4037; /* Marrom escuro para texto */
+  --text-color: #5D4037;
   --font-headings: 'Montserrat', sans-serif;
   --font-body: 'Lato', sans-serif;
 
@@ -244,7 +306,6 @@ html {
   margin: 0 auto 60px auto;
 }
 
-/* --- ANIMAÇÃO DE SCROLL --- */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -256,7 +317,6 @@ html {
   transform: translateY(0);
 }
 
-/* --- CABEÇALHO --- */
 .main-header {
   position: fixed;
   top: 0;
@@ -268,7 +328,7 @@ html {
 }
 
 .main-header.scrolled {
-  background-color: rgba(255, 248, 225, 0.95); /* Fundo creme semi-transparente */
+  background-color: rgba(255, 248, 225, 0.95);
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   padding: 10px 0;
 }
@@ -324,7 +384,6 @@ html {
   transform: scaleX(1);
 }
 
-/* --- SEÇÃO HERO --- */
 .hero-section {
   height: 100vh;
   background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2869&auto=format&fit=crop') no-repeat center center/cover;
@@ -333,7 +392,13 @@ html {
   align-items: center;
   text-align: center;
   color: var(--light-color);
-  padding-top: 80px; /* Evitar sobreposição com o header */
+  padding: 0 20px;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-content h1 {
@@ -344,8 +409,9 @@ html {
 }
 
 .hero-content p {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin-bottom: 30px;
+  max-width: 700px;
 }
 
 .cta-button {
@@ -360,15 +426,16 @@ html {
   transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .cta-button:hover {
-  background-color: #ffca28; /* Amarelo um pouco mais claro */
+  background-color: #ffca28;
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
-/* --- SEÇÃO CARDÁPIO --- */
 .menu-section {
   background-color: var(--bg-light-cream);
 }
@@ -410,9 +477,8 @@ html {
   font-size: 0.9rem;
 }
 
-/* --- SEÇÃO NOSSA CASA --- */
 .about-section {
-    background-color: var(--light-color); /* Garante fundo branco para esta seção */
+    background-color: var(--light-color);
 }
 
 .about-content {
@@ -423,59 +489,91 @@ html {
 
 .about-image {
   flex: 1;
+  position: relative;
 }
 
 .about-image img {
   width: 100%;
+  height: 450px;
+  object-fit: cover;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: block;
 }
 
 .about-text {
   flex: 1;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* --- SEÇÃO ENCOMENDAS --- */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+  font-size: 1.5rem;
+  line-height: 1;
+  width: 50px;
+  height: 50px;
+}
+.carousel-nav:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.carousel-nav.prev {
+  left: 15px;
+}
+.carousel-nav.next {
+  right: 15px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .order-section {
   background-color: var(--bg-light-cream);
+  text-align: center;
 }
 
-.order-form {
-  max-width: 700px;
-  margin: 0 auto;
+.order-options {
+  margin-top: -20px;
 }
 
-.form-group {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
+.phone-contact {
+  margin-top: 25px;
+  font-size: 1.1rem;
+  color: var(--text-color);
 }
 
-.order-form input,
-.order-form textarea {
-  width: 100%;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-family: var(--font-body);
-  font-size: 1rem;
+.phone-number {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--dark-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.order-form input:focus,
-.order-form textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+.phone-number:hover {
+  color: var(--accent-color);
 }
 
-.order-form button {
-  width: 100%;
-  padding: 15px;
-}
-
-/* --- SEÇÃO LOCALIZAÇÃO --- */
 .location-section {
-    background-color: var(--light-color); /* Garante fundo branco para esta seção */
+    background-color: var(--light-color);
 }
 
 .location-content {
@@ -508,7 +606,6 @@ html {
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* --- RODAPÉ --- */
 .main-footer-bottom {
   background-color: var(--dark-color);
   color: var(--light-color);
@@ -534,7 +631,6 @@ html {
   color: var(--primary-color);
 }
 
-/* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
   .section-title {
     font-size: 2rem;
@@ -558,10 +654,11 @@ html {
     flex-direction: column;
   }
   
-  .form-group {
-    flex-direction: column;
+  .about-text {
+    height: auto;
+    margin-top: 30px;
   }
-
+  
   .main-footer-bottom .container {
     flex-direction: column;
     gap: 10px;
