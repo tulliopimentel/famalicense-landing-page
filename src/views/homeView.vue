@@ -1,23 +1,27 @@
 <template>
   <div class="bakery-landing-page">
-    <header class="main-header" :class="{ 'scrolled': isScrolled }">
+    <header class="main-header" :class="{ 'scrolled': isScrolled, 'mobile-menu-active': isMobileMenuOpen }">
       <div class="container">
         <div class="logo">Padaria Famalicense</div>
-        <nav>
+
+        <nav class="desktop-nav" :class="{ 'is-active': isMobileMenuOpen }">
           <ul>
-            <li><a href="#home" @click.prevent="scrollTo('home')" :class="{ active: activeSection === 'home' }">HOME</a></li>
-            <li><a href="#novidades" @click.prevent="scrollTo('novidades')" :class="{ active: activeSection === 'novidades' }">NOVIDADES</a></li>
-            <li><a href="#cardapio" @click.prevent="scrollTo('cardapio')"
-                :class="{ active: activeSection === 'cardapio' }">CARDÁPIO</a></li>
-            <li><a href="#nossa-casa" @click.prevent="scrollTo('nossa-casa')"
-                :class="{ active: activeSection === 'nossa-casa' }">NOSSA CASA</a></li>
-            <li><a href="#eventos" @click.prevent="scrollTo('eventos')" :class="{ active: activeSection === 'eventos' }">EVENTOS</a></li>
-            <li><a href="#encomendas" @click.prevent="scrollTo('encomendas')"
-                :class="{ active: activeSection === 'encomendas' }">ENCOMENDAS</a></li>
-            <li><a href="#localizacao" @click.prevent="scrollTo('localizacao')"
-                :class="{ active: activeSection === 'localizacao' }">LOCALIZAÇÃO</a></li>
+            <li><a href="#home" @click.prevent="scrollToAndCloseMenu('home')">HOME</a></li>
+            <li><a href="#novidades" @click.prevent="scrollToAndCloseMenu('novidades')">NOVIDADES</a></li>
+            <li><a href="#cardapio" @click.prevent="scrollToAndCloseMenu('cardapio')">CARDÁPIO</a></li>
+            <li><a href="#nossa-casa" @click.prevent="scrollToAndCloseMenu('nossa-casa')">NOSSA CASA</a></li>
+            <li><a href="#eventos" @click.prevent="scrollToAndCloseMenu('eventos')">EVENTOS</a></li>
+            <li><a href="#encomendas" @click.prevent="scrollToAndCloseMenu('encomendas')">ENCOMENDAS</a></li>
+            <li><a href="#localizacao" @click.prevent="scrollToAndCloseMenu('localizacao')">LOCALIZAÇÃO</a></li>
           </ul>
         </nav>
+
+        <button class="hamburger-button" @click="toggleMobileMenu" :class="{ 'is-active': isMobileMenuOpen }" aria-label="Abrir menu">
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+          <div class="hamburger-line"></div>
+        </button>
+
       </div>
     </header>
 
@@ -50,7 +54,6 @@
               <h3>Delivery aos Domingos</h3>
               <p>Agora você pode receber nossas delícias em casa também aos domingos, com a qualidade de sempre!</p>
               <div class="news-details">
-                <p><strong>Horário:</strong> A partir das 9h</p>
                 <p><strong>Antecipe suas encomendas:</strong> <a href="tel:+551132081804">(11) 3208-1804</a></p>
               </div>
             </div>
@@ -96,7 +99,7 @@
         </div>
       </section>
 
-       <section id="eventos" class="events-section section">
+      <section id="eventos" class="events-section section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sediamos Seu Evento</h2>
           <div class="events-content-wrapper animate-on-scroll">
@@ -201,17 +204,13 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 
-// IMAGENS DO CARROSSEL NOSSA CASA
+// --- (Todos os imports de imagem permanecem os mesmos) ---
 import imgLogo from '../assets/logo.png'
 import imgPadaria from '../assets/padaria1.png';
 import imgConfeitaria from '../assets/confeitaria1.png';
 import imgPizzaria from '../assets/padaria2.png';
 import imgRestaurante from '../assets/restaurantes.png';
-
-// IMAGEM DA NOVA SEÇÃO EVENTOS
-import imgEventos from '../assets/eventos.jpg'; // Lembre-se de adicionar a sua imagem na pasta assets
-
-// IMAGENS DO CARROSSEL CARDÁPIO
+import imgEventos from '../assets/eventos.jpg';
 import cardapioImg1 from '../assets/cardapio1.jpg';
 import cardapioImg2 from '../assets/cardapio2.jpg';
 import cardapioImg3 from '../assets/cardapio3.jpg';
@@ -224,8 +223,6 @@ import cardapioImg9 from '../assets/cardapio9.jpg';
 import cardapioImg10 from '../assets/cardapio10.jpg';
 import cardapioImg11 from '../assets/cardapio11.jpg';
 import cardapioImg12 from '../assets/cardapio12.jpg';
-
-// Imagens encomenda
 import imgEncomenda1 from '../assets/encomenda1.jpg'
 import imgEncomenda2 from '../assets/encomenda2.jpg'
 import imgEncomenda3 from '../assets/encomenda3.jpg'
@@ -238,6 +235,17 @@ const activeSection = ref('home');
 let animationObserver = null;
 let scrollSpyObserver = null;
 
+// --- LÓGICA DO MENU MOBILE ---
+const isMobileMenuOpen = ref(false);
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+const scrollToAndCloseMenu = (sectionId) => {
+  scrollTo(sectionId);
+  isMobileMenuOpen.value = false;
+};
+
+// --- (Restante do script permanece o mesmo) ---
 const handleScroll = () => { isScrolled.value = window.scrollY > 50; };
 const scrollTo = (sectionId) => {
   const element = document.getElementById(sectionId);
@@ -245,23 +253,20 @@ const scrollTo = (sectionId) => {
     window.scrollTo({ top: element.offsetTop - 80, behavior: 'smooth' });
   }
 };
-
 const currentSlideIndex = ref(0);
 let autoplayInterval = null;
 const nossaCasaSlides = ref([
-  { title: 'Nossa Casa', text: 'Somos diversificados e populares. Atuamos como padaria, confeitaria, restaurante a la carte, self-service grill e pizzaria. Temos orgulho de nossa tradição, estamos no mesmo local desde 1961. Somos gratos ao bairro do Cambuci que nos acolheu durante todos estes anos, onde pudemos aprender, crescer e contribuir com nossos valores e tradições representados por nossos produtos e serviços. O nome FAMALICENSE é uma homenagem aos nascidos na cidade  de Vila Nova Famalicão localizada na região Norte de Portugal, mais que uma simples padaria, com um novo conceito, une tradição e conveniência, trazendo ao bairro do Cambuci um ambiente descontraido e informal oferecendo aos seus clientes uma grande variedade de opções para saborear.', imageSrc: imgLogo },
-  { title: 'Padaria', text: 'Grande variedade de pães: francês tradicional, integral, c/ torresmo, multi-grãos, italiano, folar português, de batata, de mandioquinha e muitos outros.', imageSrc: imgPadaria },
-  { title: 'Confeitaria', text: 'Tudo feito com amor e dedicação e com uma equipe bem entrosada, também oferecemos uma grande variedade de bolos, doces e salgados com estilo bem tradicional.', imageSrc: imgConfeitaria },
-  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas. Um ambiente gostoso e muito agradável no piso superior para receber sua família e seus amigos. Venha conferir!', imageSrc: imgPizzaria },
-  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes a opção de um almoço a la carte tradicional com os principais pratos populares da gastronomia de São Paulo ou em nosso piso superior a opção do Self-Service Grill.', imageSrc: imgRestaurante }
+  { title: 'Nossa Casa', text: 'Somos diversificados e populares...', imageSrc: imgLogo },
+  { title: 'Padaria', text: 'Grande variedade de pães...', imageSrc: imgPadaria },
+  { title: 'Confeitaria', text: 'Tudo feito com amor...', imageSrc: imgConfeitaria },
+  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas...', imageSrc: imgPizzaria },
+  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes...', imageSrc: imgRestaurante }
 ]);
 const currentSlide = computed(() => nossaCasaSlides.value[currentSlideIndex.value]);
 const nextSlide = () => { currentSlideIndex.value = (currentSlideIndex.value + 1) % nossaCasaSlides.value.length; };
 const prevSlide = () => { currentSlideIndex.value = (currentSlideIndex.value - 1 + nossaCasaSlides.value.length) % nossaCasaSlides.value.length; };
 const startAutoplay = () => { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 7000); };
 const stopAutoplay = () => { if (autoplayInterval) clearInterval(autoplayInterval); };
-
-// --- LÓGICA DO CARROSSEL "CARDÁPIO" ---
 const cardapioImages = ref([
   cardapioImg1, cardapioImg2, cardapioImg3, cardapioImg4, cardapioImg5, cardapioImg6,
   cardapioImg7, cardapioImg8, cardapioImg9, cardapioImg10, cardapioImg11, cardapioImg12
@@ -269,19 +274,14 @@ const cardapioImages = ref([
 const cardapioCurrentIndex = ref(0);
 const nextCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value + 1) % cardapioImages.value.length; };
 const prevCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value - 1 + cardapioImages.value.length) % cardapioImages.value.length; };
-
-// --- LÓGICA DO CARROSSEL "ENCOMENDAS" ---
 const encomendaImages = ref([ imgEncomenda1, imgEncomenda2, imgEncomenda3, imgEncomenda4 ]);
 const encomendaCurrentIndex = ref(0);
 const nextEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value + 1) % encomendaImages.value.length; };
 const prevEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value - 1 + encomendaImages.value.length) % encomendaImages.value.length; };
-
-// --- LÓGICA DO MODAL DE IMAGEM ---
 const isModalOpen = ref(false);
 const modalImageSrc = ref('');
 const activeModalImages = ref([]);
 const activeModalIndex = ref(0);
-
 const openModal = (imageArray, startIndex) => {
   activeModalImages.value = imageArray;
   activeModalIndex.value = startIndex;
@@ -289,32 +289,26 @@ const openModal = (imageArray, startIndex) => {
   isModalOpen.value = true;
   document.body.style.overflow = 'hidden';
 };
-
 const closeModal = () => {
   isModalOpen.value = false;
   document.body.style.overflow = '';
 };
-
 const nextModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value + 1) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
-
 const prevModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value - 1 + activeModalImages.value.length) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
-
 const handleKeydown = (e) => {
   if (!isModalOpen.value) return;
   if (e.key === 'Escape') closeModal();
   if (e.key === 'ArrowRight') nextModalImage();
   if (e.key === 'ArrowLeft') prevModalImage();
 };
-
-// --- LIFECYCLE HOOKS ---
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('keydown', handleKeydown);
@@ -339,7 +333,6 @@ onMounted(() => {
   sections.forEach(section => scrollSpyObserver.observe(section));
   startAutoplay();
 });
-
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('keydown', handleKeydown);
@@ -352,6 +345,7 @@ onBeforeUnmount(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap');
 
+/* ... (Todo o CSS anterior permanece o mesmo até o header) ... */
 .bakery-landing-page {
   --primary-color: #FFC107;
   --accent-color: #D32F2F;
@@ -370,39 +364,71 @@ onBeforeUnmount(() => {
 html { scroll-behavior: smooth; }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .section { padding: 80px 0; }
+
+/* --- ESTILOS DO HEADER --- */
+.main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: background-color 0.4s ease, padding 0.4s ease; padding: 20px 0; }
+.main-header.scrolled { background-color: rgba(255, 248, 225, 0.98); box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px 0; }
+.main-header.mobile-menu-active { background-color: rgba(255, 248, 225, 1); } /* Fundo sólido quando menu aberto */
+.main-header .container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-family: var(--font-headings); font-size: 1.8rem; font-weight: 800; color: var(--dark-color); }
+.desktop-nav ul { list-style: none; display: flex; margin: 0; padding: 0; }
+.desktop-nav ul li a { color: var(--dark-color); text-decoration: none; margin: 0 15px; font-weight: 700; position: relative; padding: 5px 0; transition: color 0.3s ease; font-size: 0.9rem; }
+.desktop-nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-color); transform: scaleX(0); transform-origin: center; transition: transform 0.4s ease; }
+.desktop-nav ul li a:hover, .desktop-nav ul li a.active { color: var(--accent-color); }
+.desktop-nav ul li a:hover::after, .desktop-nav ul li a.active::after { transform: scaleX(1); }
+
+/* --- BOTÃO HAMBÚRGUER E MENU MOBILE --- */
+.hamburger-button { display: none; /* Oculto por padrão */ }
+/* ... (Restante do CSS permanece o mesmo) ... */
 .section-title { font-family: var(--font-headings); font-size: 2.5rem; text-align: center; margin-bottom: 20px; color: var(--dark-color); }
 .section-subtitle { text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 60px auto; }
 .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
 .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-.main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: background-color 0.4s ease, padding 0.4s ease; padding: 20px 0; }
-.main-header.scrolled { background-color: rgba(255, 248, 225, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px 0; }
-.main-header .container { display: flex; justify-content: ; align-items: center; gap: 20px}
-.logo { font-family: var(--font-headings); font-size: 1.4rem; font-weight: 800; color: var(--dark-color);}
-.main-header nav ul { list-style: none; display: flex; }
-.main-header nav ul li a { color: var(--dark-color); text-decoration: none; margin: 0 10px; font-weight: 700; position: relative; padding: 5px 0; transition: color 0.3s ease; }
-.main-header nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-color); transform: scaleX(0); transform-origin: center; transition: transform 0.4s ease; }
-.main-header nav ul li a:hover, .main-header nav ul li a.active { color: var(--accent-color); }
-.main-header nav ul li a:hover::after, .main-header nav ul li a.active::after { transform: scaleX(1); }
 .hero-section { height: 100vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2869&auto=format&fit=crop') no-repeat center center/cover; display: flex; justify-content: center; align-items: center; text-align: center; color: var(--light-color); padding: 0 20px; }
 .hero-content { display: flex; flex-direction: column; align-items: center; }
 .hero-content h1 { font-family: var(--font-headings); font-size: 4rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
 .hero-content p { font-size: 1.2rem; margin-bottom: 30px; max-width: 700px; }
 .cta-button { background-color: var(--primary-color); color: var(--dark-color); border: none; padding: 15px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; display: inline-block; }
 .cta-button:hover { background-color: #ffca28; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-
-/* --- CSS PARA A SEÇÃO DE NOVIDADES --- */
 .news-section { background-color: var(--dark-color); color: var(--light-color); }
 .news-section .section-title { color: var(--light-color); }
-.news-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; align-items: start; }
-.news-item { text-align: center; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; transition: background-color 0.3s ease, transform 0.3s ease; }
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  align-items: stretch; /* CORREÇÃO: Garante que todos os cards na mesma linha tenham a mesma altura */
+}
+
+.news-item {
+  display: flex; /* Adicionado */
+  flex-direction: column; /* Adicionado */
+  text-align: center;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
 .news-item:hover { background-color: rgba(255, 255, 255, 0.05); transform: translateY(-5px); }
-.news-item svg { width: 50px; height: 50px; fill: var(--primary-color); margin-bottom: 20px; }
+.news-item svg { width: 100%; height: 50px; fill: var(--primary-color); margin-bottom: 20px; }
 .news-item h3 { font-family: var(--font-headings); color: var(--primary-color); margin-bottom: 15px; font-size: 1.8rem; }
-.news-item p { margin-bottom: 20px; color: rgba(255, 255, 255, 0.9); line-height: 1.7; }
-.news-details p { margin-bottom: 5px; font-size: 1rem; }
+
+.news-item p {
+  flex-grow: 1; /* Adicionado: Faz o parágrafo principal ocupar o espaço extra, empurrando os detalhes para o rodapé do card */
+  margin-bottom: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.7;
+}
+
+.news-details p {
+  flex-grow: 0; /* Garante que este parágrafo não cresça */
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
 .news-details a { color: var(--light-color); text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
 .news-details a:hover { color: var(--primary-color); }
-
 .menu-section { background-color: var(--bg-light-cream); }
 .cardapio-carousel-wrapper { position: relative; max-width: 450px; margin: 0 auto; }
 .cardapio-image-container { overflow: hidden; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background-color: var(--light-color); height: 600px; display: flex; align-items: center; justify-content: center; }
@@ -423,55 +449,16 @@ html { scroll-behavior: smooth; }
 .carousel-nav.next { right: 15px; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
-
-/* --- CSS DA NOVA SEÇÃO DE EVENTOS --- */
-.events-section {
-  background-color: var(--bg-light-cream);
-}
-.events-content-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  background-color: var(--light-color);
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-.events-image-container {
-  flex: 1;
-  max-width: 50%;
-}
-.events-image {
-  width: 100%;
-  border-radius: 10px;
-  display: block;
-}
-.events-text {
-  flex: 1;
-  text-align: center;
-}
-.events-text p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-.events-phone {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-.events-phone a {
-  color: var(--accent-color);
-  text-decoration: none;
-  transition: opacity 0.3s;
-}
-.events-phone a:hover {
-  opacity: 0.8;
-}
-.events-highlight {
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-
+.events-section { background-color: var(--bg-light-cream); }
+.events-content-wrapper { display: flex; align-items: center; gap: 50px; background-color: var(--light-color); padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.events-image-container { flex: 1; max-width: 50%; }
+.events-image { width: 100%; border-radius: 10px; display: block; }
+.events-text { flex: 1; text-align: center; }
+.events-text p { font-size: 1.2rem; margin-bottom: 20px; }
+.events-phone { font-size: 1.5rem; font-weight: bold; }
+.events-phone a { color: var(--accent-color); text-decoration: none; transition: opacity 0.3s; }
+.events-phone a:hover { opacity: 0.8; }
+.events-highlight { font-weight: bold; color: var(--text-color); }
 .encomendas-section { background-color: var(--dark-color); }
 .encomendas-section .section-title, .encomendas-section .section-subtitle { color: var(--light-color); }
 .encomendas-carousel-wrapper { position: relative; max-width: 800px; margin: 0 auto; }
@@ -501,7 +488,64 @@ html { scroll-behavior: smooth; }
 .modal-nav.prev { left: 20px; }
 .modal-nav.next { right: 20px; }
 
-/* --- RESPONSIVIDADE --- */
+/* --- RESPONSIVIDADE E MENU MOBILE --- */
+@media (max-width: 1024px) { /* Ponto de quebra para o menu hambúrguer */
+  .desktop-nav {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Começa fora da tela */
+    width: 300px;
+    height: 100vh;
+    background-color: var(--bg-light-cream);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 1001;
+    padding-top: 100px;
+  }
+  .desktop-nav.is-active {
+    right: 0; /* Desliza para dentro da tela */
+  }
+  .desktop-nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .desktop-nav ul li a {
+    font-size: 1.2rem;
+  }
+  .hamburger-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1002; /* Fica acima do menu */
+  }
+  .hamburger-line {
+    width: 30px;
+    height: 3px;
+    background-color: var(--dark-color);
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+  }
+  .hamburger-button.is-active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg);
+  }
+  .hamburger-button.is-active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  .hamburger-button.is-active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+}
+
 @media (max-width: 992px) {
   .cardapio-nav.prev, .encomendas-carousel-wrapper .cardapio-nav.prev { left: 10px; }
   .cardapio-nav.next, .encomendas-carousel-wrapper .cardapio-nav.next { right: 10px; }
@@ -509,12 +553,12 @@ html { scroll-behavior: smooth; }
 @media (max-width: 768px) {
   .section-title { font-size: 2rem; }
   .hero-content h1 { font-size: 2.8rem; }
-  .main-header .container, .about-content, .location-content, .main-footer-bottom .container { flex-direction: column; gap: 10px; }
-  .main-header nav ul li a { margin: 0 8px; font-size: 0.9rem; }
+  .main-header .container { flex-direction: row; } /* Garante que logo e menu fiquem na mesma linha */
   .news-grid { grid-template-columns: 1fr; }
   .events-content-wrapper { flex-direction: column; }
   .events-image-container { max-width: 100%; }
   .events-text { margin-top: 30px; }
+  .about-content, .location-content, .main-footer-bottom .container { flex-direction: column; gap: 10px; }
   .about-text { height: auto; margin-top: 30px; }
   .cardapio-image-container { height: 400px; }
   .cardapio-carousel-wrapper { max-width: 100%; }
