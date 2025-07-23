@@ -11,6 +11,7 @@
                 :class="{ active: activeSection === 'cardapio' }">CARDÁPIO</a></li>
             <li><a href="#nossa-casa" @click.prevent="scrollTo('nossa-casa')"
                 :class="{ active: activeSection === 'nossa-casa' }">NOSSA CASA</a></li>
+            <li><a href="#eventos" @click.prevent="scrollTo('eventos')" :class="{ active: activeSection === 'eventos' }">EVENTOS</a></li>
             <li><a href="#encomendas" @click.prevent="scrollTo('encomendas')"
                 :class="{ active: activeSection === 'encomendas' }">ENCOMENDAS</a></li>
             <li><a href="#localizacao" @click.prevent="scrollTo('localizacao')"
@@ -95,9 +96,25 @@
         </div>
       </section>
 
+       <section id="eventos" class="events-section section">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Sediamos Seu Evento</h2>
+          <div class="events-content-wrapper animate-on-scroll">
+            <div class="events-image-container">
+              <img :src="imgEventos" alt="Salão de eventos da padaria Famalicense" class="events-image"/>
+            </div>
+            <div class="events-text">
+              <p>Para maiores detalhes, converse com a gerência.</p>
+              <p class="events-phone">Consulte-nos: <a href="tel:+551132081804">(11) 3208-1804</a></p>
+              <p class="events-highlight">Economize! Não cobramos o espaço, apenas o consumo.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="encomendas" class="encomendas-section section">
         <div class="container">
-          <h2 class="section-title animate-on-scroll">Encomendas</h2>
+          <h2 class="section-title animate-on-scroll">Encomendas para Festas</h2>
           <p class="section-subtitle animate-on-scroll">Preços sujeitos a alteração sem aviso prévio. Confirmar os preços antes de nos visitar ou de encomendar algo.</p>
           <div class="encomendas-carousel-wrapper animate-on-scroll">
             <button @click="prevEncomendaImage" class="cardapio-nav prev" aria-label="Encomenda Anterior">❮</button>
@@ -182,13 +199,19 @@
 </template>
 
 <script setup>
-// ... O SCRIPT INTEIRO PERMANECE O MESMO ...
 import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+
+// IMAGENS DO CARROSSEL NOSSA CASA
 import imgLogo from '../assets/logo.png'
 import imgPadaria from '../assets/padaria1.png';
 import imgConfeitaria from '../assets/confeitaria1.png';
 import imgPizzaria from '../assets/padaria2.png';
 import imgRestaurante from '../assets/restaurantes.png';
+
+// IMAGEM DA NOVA SEÇÃO EVENTOS
+import imgEventos from '../assets/eventos.jpg'; // Lembre-se de adicionar a sua imagem na pasta assets
+
+// IMAGENS DO CARROSSEL CARDÁPIO
 import cardapioImg1 from '../assets/cardapio1.jpg';
 import cardapioImg2 from '../assets/cardapio2.jpg';
 import cardapioImg3 from '../assets/cardapio3.jpg';
@@ -201,14 +224,20 @@ import cardapioImg9 from '../assets/cardapio9.jpg';
 import cardapioImg10 from '../assets/cardapio10.jpg';
 import cardapioImg11 from '../assets/cardapio11.jpg';
 import cardapioImg12 from '../assets/cardapio12.jpg';
+
+// Imagens encomenda
 import imgEncomenda1 from '../assets/encomenda1.jpg'
 import imgEncomenda2 from '../assets/encomenda2.jpg'
 import imgEncomenda3 from '../assets/encomenda3.jpg'
 import imgEncomenda4 from '../assets/encomenda4.jpg'
+
+
+// --- LÓGICA GERAL E SCROLL ---
 const isScrolled = ref(false);
 const activeSection = ref('home');
 let animationObserver = null;
 let scrollSpyObserver = null;
+
 const handleScroll = () => { isScrolled.value = window.scrollY > 50; };
 const scrollTo = (sectionId) => {
   const element = document.getElementById(sectionId);
@@ -216,20 +245,23 @@ const scrollTo = (sectionId) => {
     window.scrollTo({ top: element.offsetTop - 80, behavior: 'smooth' });
   }
 };
+
 const currentSlideIndex = ref(0);
 let autoplayInterval = null;
 const nossaCasaSlides = ref([
-  { title: 'Nossa Casa', text: 'Somos diversificados e populares...', imageSrc: imgLogo },
-  { title: 'Padaria', text: 'Grande variedade de pães...', imageSrc: imgPadaria },
-  { title: 'Confeitaria', text: 'Tudo feito com amor...', imageSrc: imgConfeitaria },
-  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas...', imageSrc: imgPizzaria },
-  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes...', imageSrc: imgRestaurante }
+  { title: 'Nossa Casa', text: 'Somos diversificados e populares. Atuamos como padaria, confeitaria, restaurante a la carte, self-service grill e pizzaria. Temos orgulho de nossa tradição, estamos no mesmo local desde 1961. Somos gratos ao bairro do Cambuci que nos acolheu durante todos estes anos, onde pudemos aprender, crescer e contribuir com nossos valores e tradições representados por nossos produtos e serviços. O nome FAMALICENSE é uma homenagem aos nascidos na cidade  de Vila Nova Famalicão localizada na região Norte de Portugal, mais que uma simples padaria, com um novo conceito, une tradição e conveniência, trazendo ao bairro do Cambuci um ambiente descontraido e informal oferecendo aos seus clientes uma grande variedade de opções para saborear.', imageSrc: imgLogo },
+  { title: 'Padaria', text: 'Grande variedade de pães: francês tradicional, integral, c/ torresmo, multi-grãos, italiano, folar português, de batata, de mandioquinha e muitos outros.', imageSrc: imgPadaria },
+  { title: 'Confeitaria', text: 'Tudo feito com amor e dedicação e com uma equipe bem entrosada, também oferecemos uma grande variedade de bolos, doces e salgados com estilo bem tradicional.', imageSrc: imgConfeitaria },
+  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas. Um ambiente gostoso e muito agradável no piso superior para receber sua família e seus amigos. Venha conferir!', imageSrc: imgPizzaria },
+  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes a opção de um almoço a la carte tradicional com os principais pratos populares da gastronomia de São Paulo ou em nosso piso superior a opção do Self-Service Grill.', imageSrc: imgRestaurante }
 ]);
 const currentSlide = computed(() => nossaCasaSlides.value[currentSlideIndex.value]);
 const nextSlide = () => { currentSlideIndex.value = (currentSlideIndex.value + 1) % nossaCasaSlides.value.length; };
 const prevSlide = () => { currentSlideIndex.value = (currentSlideIndex.value - 1 + nossaCasaSlides.value.length) % nossaCasaSlides.value.length; };
 const startAutoplay = () => { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 7000); };
 const stopAutoplay = () => { if (autoplayInterval) clearInterval(autoplayInterval); };
+
+// --- LÓGICA DO CARROSSEL "CARDÁPIO" ---
 const cardapioImages = ref([
   cardapioImg1, cardapioImg2, cardapioImg3, cardapioImg4, cardapioImg5, cardapioImg6,
   cardapioImg7, cardapioImg8, cardapioImg9, cardapioImg10, cardapioImg11, cardapioImg12
@@ -237,14 +269,19 @@ const cardapioImages = ref([
 const cardapioCurrentIndex = ref(0);
 const nextCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value + 1) % cardapioImages.value.length; };
 const prevCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value - 1 + cardapioImages.value.length) % cardapioImages.value.length; };
+
+// --- LÓGICA DO CARROSSEL "ENCOMENDAS" ---
 const encomendaImages = ref([ imgEncomenda1, imgEncomenda2, imgEncomenda3, imgEncomenda4 ]);
 const encomendaCurrentIndex = ref(0);
 const nextEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value + 1) % encomendaImages.value.length; };
 const prevEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value - 1 + encomendaImages.value.length) % encomendaImages.value.length; };
+
+// --- LÓGICA DO MODAL DE IMAGEM ---
 const isModalOpen = ref(false);
 const modalImageSrc = ref('');
 const activeModalImages = ref([]);
 const activeModalIndex = ref(0);
+
 const openModal = (imageArray, startIndex) => {
   activeModalImages.value = imageArray;
   activeModalIndex.value = startIndex;
@@ -252,26 +289,32 @@ const openModal = (imageArray, startIndex) => {
   isModalOpen.value = true;
   document.body.style.overflow = 'hidden';
 };
+
 const closeModal = () => {
   isModalOpen.value = false;
   document.body.style.overflow = '';
 };
+
 const nextModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value + 1) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
+
 const prevModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value - 1 + activeModalImages.value.length) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
+
 const handleKeydown = (e) => {
   if (!isModalOpen.value) return;
   if (e.key === 'Escape') closeModal();
   if (e.key === 'ArrowRight') nextModalImage();
   if (e.key === 'ArrowLeft') prevModalImage();
 };
+
+// --- LIFECYCLE HOOKS ---
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('keydown', handleKeydown);
@@ -296,6 +339,7 @@ onMounted(() => {
   sections.forEach(section => scrollSpyObserver.observe(section));
   startAutoplay();
 });
+
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('keydown', handleKeydown);
@@ -308,7 +352,6 @@ onBeforeUnmount(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap');
 
-/* ... (Todo o CSS anterior permanece o mesmo até a seção de hero) ... */
 .bakery-landing-page {
   --primary-color: #FFC107;
   --accent-color: #D32F2F;
@@ -347,61 +390,18 @@ html { scroll-behavior: smooth; }
 .cta-button { background-color: var(--primary-color); color: var(--dark-color); border: none; padding: 15px 30px; font-size: 1rem; font-weight: 700; border-radius: 50px; cursor: pointer; transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; display: inline-block; }
 .cta-button:hover { background-color: #ffca28; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 
-/* --- CSS PARA A NOVA SEÇÃO DE NOVIDADES --- */
-.news-section {
-  background-color: var(--dark-color);
-  color: var(--light-color);
-}
-.news-section .section-title {
-    color: var(--light-color);
-}
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 50px;
-  align-items: start;
-}
-.news-item {
-  text-align: center;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-.news-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    transform: translateY(-5px);
-}
-.news-item svg {
-  width: 50px;
-  height: 50px;
-  fill: var(--primary-color);
-  margin-bottom: 20px;
-}
-.news-item h3 {
-  font-family: var(--font-headings);
-  color: var(--primary-color);
-  margin-bottom: 15px;
-  font-size: 1.8rem;
-}
-.news-item p {
-  margin-bottom: 20px;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.7;
-}
-.news-details p {
-  margin-bottom: 5px;
-  font-size: 1rem;
-}
-.news-details a {
-  color: var(--light-color);
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-.news-details a:hover {
-    color: var(--primary-color);
-}
+/* --- CSS PARA A SEÇÃO DE NOVIDADES --- */
+.news-section { background-color: var(--dark-color); color: var(--light-color); }
+.news-section .section-title { color: var(--light-color); }
+.news-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px; align-items: start; }
+.news-item { text-align: center; padding: 30px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; transition: background-color 0.3s ease, transform 0.3s ease; }
+.news-item:hover { background-color: rgba(255, 255, 255, 0.05); transform: translateY(-5px); }
+.news-item svg { width: 50px; height: 50px; fill: var(--primary-color); margin-bottom: 20px; }
+.news-item h3 { font-family: var(--font-headings); color: var(--primary-color); margin-bottom: 15px; font-size: 1.8rem; }
+.news-item p { margin-bottom: 20px; color: rgba(255, 255, 255, 0.9); line-height: 1.7; }
+.news-details p { margin-bottom: 5px; font-size: 1rem; }
+.news-details a { color: var(--light-color); text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
+.news-details a:hover { color: var(--primary-color); }
 
 .menu-section { background-color: var(--bg-light-cream); }
 .cardapio-carousel-wrapper { position: relative; max-width: 450px; margin: 0 auto; }
@@ -423,6 +423,55 @@ html { scroll-behavior: smooth; }
 .carousel-nav.next { right: 15px; }
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* --- CSS DA NOVA SEÇÃO DE EVENTOS --- */
+.events-section {
+  background-color: var(--bg-light-cream);
+}
+.events-content-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  background-color: var(--light-color);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+.events-image-container {
+  flex: 1;
+  max-width: 50%;
+}
+.events-image {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+.events-text {
+  flex: 1;
+  text-align: center;
+}
+.events-text p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+.events-phone {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.events-phone a {
+  color: var(--accent-color);
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+.events-phone a:hover {
+  opacity: 0.8;
+}
+.events-highlight {
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+
 .encomendas-section { background-color: var(--dark-color); }
 .encomendas-section .section-title, .encomendas-section .section-subtitle { color: var(--light-color); }
 .encomendas-carousel-wrapper { position: relative; max-width: 800px; margin: 0 auto; }
@@ -462,7 +511,10 @@ html { scroll-behavior: smooth; }
   .hero-content h1 { font-size: 2.8rem; }
   .main-header .container, .about-content, .location-content, .main-footer-bottom .container { flex-direction: column; gap: 10px; }
   .main-header nav ul li a { margin: 0 8px; font-size: 0.9rem; }
-  .news-grid { grid-template-columns: 1fr; } /* Colunas das novidades ficam verticais */
+  .news-grid { grid-template-columns: 1fr; }
+  .events-content-wrapper { flex-direction: column; }
+  .events-image-container { max-width: 100%; }
+  .events-text { margin-top: 30px; }
   .about-text { height: auto; margin-top: 30px; }
   .cardapio-image-container { height: 400px; }
   .cardapio-carousel-wrapper { max-width: 100%; }
