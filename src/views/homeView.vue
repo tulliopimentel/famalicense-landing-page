@@ -376,10 +376,10 @@ html { scroll-behavior: smooth; }
 .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 .main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: background-color 0.4s ease, padding 0.4s ease; padding: 20px 0; }
 .main-header.scrolled { background-color: rgba(255, 248, 225, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 10px 0; }
-.main-header .container { display: flex; justify-content: space-between; align-items: center; }
-.logo { font-family: var(--font-headings); font-size: 1.8rem; font-weight: 800; color: var(--dark-color); }
+.main-header .container { display: flex; justify-content: ; align-items: center; gap: 20px}
+.logo { font-family: var(--font-headings); font-size: 1.4rem; font-weight: 800; color: var(--dark-color);}
 .main-header nav ul { list-style: none; display: flex; }
-.main-header nav ul li a { color: var(--dark-color); text-decoration: none; margin: 0 15px; font-weight: 700; position: relative; padding: 5px 0; transition: color 0.3s ease; }
+.main-header nav ul li a { color: var(--dark-color); text-decoration: none; margin: 0 10px; font-weight: 700; position: relative; padding: 5px 0; transition: color 0.3s ease; }
 .main-header nav ul li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--accent-color); transform: scaleX(0); transform-origin: center; transition: transform 0.4s ease; }
 .main-header nav ul li a:hover, .main-header nav ul li a.active { color: var(--accent-color); }
 .main-header nav ul li a:hover::after, .main-header nav ul li a.active::after { transform: scaleX(1); }
