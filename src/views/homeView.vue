@@ -420,7 +420,7 @@ html {
 
 .logo {
   font-family: var(--font-headings);
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--dark-color);
 }
