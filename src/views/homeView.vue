@@ -29,7 +29,7 @@
     <main>
       <section id="home" class="hero-section section">
         <div class="hero-content">
-          <h1 class="animate-on-scroll">Qualidade e tradição desde 1961</h1>
+          <h1 class="animate-on-scroll">Qualidade e Tradição desde 1961</h1>
           <p class="animate-on-scroll">Qualidade, sabor, variedade e tradição você encontra na Famalicense. Aqui tem
             pães deliciosos, tudo de confeitaria, almoço diversificado, pizzaria e uma cerveja sempre geladinha. Traga
             sua família e amigos para provar nossas saborosas pizzas, salgados e refeições. Você irá se apaixonar.</p>
@@ -152,7 +152,7 @@
           <div class="order-options animate-on-scroll">
             <a href="https://famalicense.bedelivery.com.br/" target="_blank" rel="noopener noreferrer"
               class="cta-button">
-              Pedir Online via BeDelivery
+              Pedir Online
             </a>
             <p class="phone-contact">
               ou ligue para nós <br>
