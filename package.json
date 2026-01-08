@@ -12,6 +12,7 @@
     "deploy": "npm run build && npx gh-pages -d dist"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "swiper": "^11.0.0",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1"

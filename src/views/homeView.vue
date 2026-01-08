@@ -1,219 +1,578 @@
-<template>
-  <div class="bakery-landing-page">
-    <header class="main-header" :class="{ 'scrolled': isScrolled, 'mobile-menu-active': isMobileMenuOpen }">
-      <div class="container">
-        <div class="logo">Padaria Famalicense</div>
+﻿<template>
+  <div class="famalicense-landing">
+    <!-- Header Moderno -->
+    <header class="header" :class="{ 'scrolled': isScrolled }">
+      <div class="header-container">
+        <div class="logo-container">
+          <img :src="imgLogo" alt="Famalicense Logo" class="logo-img" />
+          <span class="logo-text">Famalicense</span>
+        </div>
 
-        <nav class="desktop-nav" :class="{ 'is-active': isMobileMenuOpen }">
-          <ul>
-            <li><a href="#home" @click.prevent="scrollToAndCloseMenu('home')">HOME</a></li>
-            <li><a href="#novidades" @click.prevent="scrollToAndCloseMenu('novidades')">NOVIDADES</a></li>
-            <li><a href="#cardapio" @click.prevent="scrollToAndCloseMenu('cardapio')">CARDÁPIO</a></li>
-            <li><a href="#nossa-casa" @click.prevent="scrollToAndCloseMenu('nossa-casa')">NOSSA CASA</a></li>
-            <li><a href="#eventos" @click.prevent="scrollToAndCloseMenu('eventos')">EVENTOS</a></li>
-            <li><a href="#encomendas" @click.prevent="scrollToAndCloseMenu('encomendas')">ENCOMENDAS</a></li>
-            <li><a href="#localizacao" @click.prevent="scrollToAndCloseMenu('localizacao')">LOCALIZAÇÃO</a></li>
-          </ul>
+        <nav class="nav" :class="{ 'mobile-open': isMobileMenuOpen }">
+          <a href="#inicio" @click.prevent="scrollToSection('inicio')" class="nav-link">Início</a>
+          <a href="#sobre" @click.prevent="scrollToSection('sobre')" class="nav-link">Sobre</a>
+          <a href="#produtos" @click.prevent="scrollToSection('produtos')" class="nav-link">Produtos</a>
+          <a href="#cardapio" @click.prevent="scrollToSection('cardapio')" class="nav-link">Cardápio</a>
+          <a href="#eventos" @click.prevent="scrollToSection('eventos')" class="nav-link">Eventos</a>
+          <a href="#contato" @click.prevent="scrollToSection('contato')" class="nav-link">Contato</a>
+          <a href="https://famalicense.bedelivery.com.br/" target="_blank" class="btn-primary-nav">Peça Agora</a>
         </nav>
 
-        <button class="hamburger-button" @click="toggleMobileMenu" :class="{ 'is-active': isMobileMenuOpen }"
-          aria-label="Abrir menu">
-          <div class="hamburger-line"></div>
-          <div class="hamburger-line"></div>
-          <div class="hamburger-line"></div>
+        <button class="mobile-toggle" @click="toggleMobileMenu" :class="{ 'active': isMobileMenuOpen }">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
-
       </div>
     </header>
 
-    <main>
-      <section id="home" class="hero-section section">
-        <div class="hero-content">
-          <h1 class="animate-on-scroll">Qualidade e Tradição desde 1961</h1>
-          <p class="animate-on-scroll">Qualidade, sabor, variedade e tradição você encontra na Famalicense. Aqui tem
-            pães deliciosos, tudo de confeitaria, almoço diversificado, pizzaria e uma cerveja sempre geladinha. Traga
-            sua família e amigos para provar nossas saborosas pizzas, salgados e refeições. Você irá se apaixonar.</p>
-          <button @click="scrollTo('cardapio')" class="cta-button animate-on-scroll">Veja nosso Cardápio</button>
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="title-line">Tradição e Sabor</span>
+          <span class="title-highlight">desde 1961</span>
+        </h1>
+        <p class="hero-subtitle">
+          Mais de 60 anos servindo as melhores receitas de padaria, confeitaria e pizzaria no coração do Cambuci
+        </p>
+        <div class="hero-buttons">
+          <button @click="scrollToSection('cardapio')" class="btn-hero-primary">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+            </svg>
+            Ver Cardápio
+          </button>
+          <a href="tel:+551132081804" class="btn-hero-secondary">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+            </svg>
+            (11) 3208-1804
+          </a>
         </div>
-      </section>
+        <div class="hero-features">
+          <div class="feature-badge">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+            <span>60+ anos de tradição</span>
+          </div>
+          <div class="feature-badge">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
+            </svg>
+            <span>Aberto 7 dias por semana</span>
+          </div>
+          <div class="feature-badge">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+              <path
+                d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
+            </svg>
+            <span>Delivery disponível</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-scroll-indicator" @click="scrollToSection('sobre')">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </section>
 
-      <section id="novidades" class="news-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Eventos e Novidades</h2>
-          <div class="news-grid">
-            <div class="news-item animate-on-scroll">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+
+    <!-- Seção Sobre a Famalicense -->
+    <section id="sobre" class="about-section">
+      <div class="about-container">
+        <div class="about-content">
+          <div class="about-text-content" data-aos="fade-right">
+            <span class="section-tag">Nossa História</span>
+            <h2 class="section-heading">Tradição Portuguesa no Coração do Cambuci</h2>
+            <p class="about-description">
+              Desde 1961, a Famalicense é mais que uma padaria. Somos uma homenagem à cidade de Vila Nova de
+              Famalicão,
+              em Portugal, trazendo o melhor da tradição portuguesa para São Paulo.
+            </p>
+            <p class="about-description">
+              Qualidade, sabor, variedade e tradição você encontra aqui. Pães deliciosos, confeitaria artesanal,
+              almoço diversificado, pizzaria e um ambiente acolhedor para toda a família.
+            </p>
+            <div class="about-stats">
+              <div class="stat-item">
+                <div class="stat-number">60+</div>
+                <div class="stat-label">Anos de História</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Especialidades</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">1000+</div>
+                <div class="stat-label">Clientes Felizes</div>
+              </div>
+            </div>
+          </div>
+          <div class="about-image-content" data-aos="fade-left">
+            <div class="about-image-main">
+              <img :src="imgLogo" alt="Padaria Famalicense" class="about-img" />
+              <div class="about-badge">
+                <div class="badge-content">
+                  <div class="badge-year">1961</div>
+                  <div class="badge-text">Desde</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Produtos/Especialidades -->
+    <section id="produtos" class="products-section">
+      <div class="products-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-tag">O que oferecemos</span>
+          <h2 class="section-heading">Nossas Especialidades</h2>
+          <p class="section-description">
+            Diversidade e qualidade em cada produto que servimos
+          </p>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card" data-aos="fade-up" data-aos-delay="100" @click="setCurrentSlide(1)">
+            <div class="product-image">
+              <img :src="imgPadaria" alt="Padaria" />
+              <div class="product-overlay">
+                <button class="product-btn">Ver Mais</button>
+              </div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">Padaria</h3>
+              <p class="product-text">
+                Grande variedade de pães: francês tradicional, integral, com torresmo, multi-grãos,
+                italiano, folar português e muito mais.
+              </p>
+            </div>
+          </div>
+
+          <div class="product-card" data-aos="fade-up" data-aos-delay="200" @click="setCurrentSlide(2)">
+            <div class="product-image">
+              <img :src="imgConfeitaria" alt="Confeitaria" />
+              <div class="product-overlay">
+                <button class="product-btn">Ver Mais</button>
+              </div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">Confeitaria</h3>
+              <p class="product-text">
+                Bolos, doces e salgados feitos com amor e dedicação, seguindo receitas tradicionais
+                que encantam gerações.
+              </p>
+            </div>
+          </div>
+
+          <div class="product-card" data-aos="fade-up" data-aos-delay="300" @click="setCurrentSlide(3)">
+            <div class="product-image">
+              <img :src="imgPizzaria" alt="Pizzaria" />
+              <div class="product-overlay">
+                <button class="product-btn">Ver Mais</button>
+              </div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">Pizzaria</h3>
+              <p class="product-text">
+                Ambiente acolhedor no piso superior com grande variedade de pizzas para você
+                saborear com família e amigos.
+              </p>
+            </div>
+          </div>
+
+          <div class="product-card" data-aos="fade-up" data-aos-delay="400" @click="setCurrentSlide(4)">
+            <div class="product-image">
+              <img :src="imgRestaurante" alt="Restaurante" />
+              <div class="product-overlay">
+                <button class="product-btn">Ver Mais</button>
+              </div>
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">Restaurante</h3>
+              <p class="product-text">
+                Almoço à la carte tradicional ou self-service grill no piso superior,
+                com os principais pratos da gastronomia paulista.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Novidades e Eventos -->
+    <section class="highlights-section">
+      <div class="highlights-container">
+        <div class="highlights-grid">
+          <div class="highlight-card highlight-music" data-aos="fade-right">
+            <div class="highlight-icon">
+              <svg width="48" height="48" fill="currentColor" viewBox="0 0 20 20">
                 <path
-                  d="M240-120v-560q0-51 28.5-87t75.5-53l80 20q33 8 66 8t66-8l80-20q47 17 75.5 53t28.5 87v560l-240-80-240 80Zm80-104 160-54 160 54v-456q0-14-6.5-25.5T608-772l-48 12q-33 8-66 8t-66-8l-48-12q-11 6-17.5 17.5T320-720v496Zm200-516q17 0 28.5-11.5T560-800q0-17-11.5-28.5T520-840q-17 0-28.5 11.5T480-800q0 17 11.5 28.5T520-740ZM240-120v-560 560Z" />
+                  d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
               </svg>
+            </div>
+            <div class="highlight-content">
               <h3>Música ao Vivo</h3>
-              <p>Venha curtir nosso Acústico Music com entrada franca em um ambiente ótimo para trazer os amigos e a
-                família.</p>
-              <div class="news-details">
-                <p><strong>Quando:</strong> Sextas e Sábados</p>
-                <p><strong>Horário:</strong> Das 20h às 23h30</p>
-              </div>
+              <p>Acústico Music todas as sextas e sábados, das 20h às 23h30. Entrada franca!</p>
+              <div class="highlight-tag">Toda semana</div>
             </div>
-            <div class="news-item animate-on-scroll">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+          </div>
+
+          <div class="highlight-card highlight-delivery" data-aos="fade-left">
+            <div class="highlight-icon">
+              <svg width="48" height="48" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
                 <path
-                  d="M780-80q-25 0-42.5-17.5T720-140q0-25 17.5-42.5T780-200q25 0 42.5 17.5T840-140q0 25-17.5 42.5T780-80Zm-480 0q-25 0-42.5-17.5T240-140q0-25 17.5-42.5T300-200q25 0 42.5 17.5T360-140q0 25-17.5 42.5T300-80ZM120-760v-80h510l114 238-104 202H286q-43 0-77.5-24T168-494L120-760Zm166 280h328l64-120H286v120Zm14-160v-120h350v120H300Z" />
+                  d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z" />
               </svg>
+            </div>
+            <div class="highlight-content">
               <h3>Delivery aos Domingos</h3>
-              <p>Agora você pode receber nossas delícias em casa também aos domingos, com a qualidade de sempre!</p>
-              <div class="news-details">
-                <p><strong>Antecipe suas encomendas:</strong> <a href="tel:+551132081804">(11) 3208-1804</a></p>
+              <p>Agora você pode receber nossas delícias em casa também aos domingos!</p>
+              <a href="tel:+551132081804" class="highlight-link">(11) 3208-1804</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção Cardápio -->
+    <section id="cardapio" class="menu-section">
+      <div class="menu-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-tag">Confira</span>
+          <h2 class="section-heading">Nosso Cardápio</h2>
+          <p class="section-description">Explore nossa variedade de produtos e sabores</p>
+        </div>
+
+        <div class="menu-carousel" data-aos="fade-up">
+          <button @click="prevCardapioImage" class="carousel-btn carousel-btn-prev">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <div class="menu-image-wrapper">
+            <transition name="slide-fade" mode="out-in">
+              <img :key="cardapioImages[cardapioCurrentIndex]" :src="cardapioImages[cardapioCurrentIndex]"
+                alt="Cardápio Famalicense" class="menu-image"
+                @click="openModal(cardapioImages, cardapioCurrentIndex)" />
+            </transition>
+            <div class="menu-image-counter">
+              {{ cardapioCurrentIndex + 1 }} / {{ cardapioImages.length }}
+            </div>
+          </div>
+
+          <button @click="nextCardapioImage" class="carousel-btn carousel-btn-next">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <p class="menu-hint">Clique na imagem para ampliar</p>
+      </div>
+    </section>
+
+    <!-- Seção Eventos -->
+    <section id="eventos" class="events-section">
+      <div class="events-container">
+        <div class="events-content">
+          <div class="events-image" data-aos="fade-right">
+            <img :src="imgEventos" alt="Eventos Famalicense" />
+            <div class="events-badge">
+              <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="events-text" data-aos="fade-left">
+            <span class="section-tag">Espaço para Eventos</span>
+            <h2 class="section-heading">Realize Seu Evento Conosco</h2>
+            <p class="events-description">
+              Temos o espaço perfeito para sua comemoração! Aniversários, confraternizações,
+              reuniões familiares e muito mais.
+            </p>
+
+            <div class="events-features">
+              <div class="feature-item">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                </svg>
+                <span>Ambiente climatizado</span>
+              </div>
+              <div class="feature-item">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                </svg>
+                <span>Cobramos apenas o consumo</span>
+              </div>
+              <div class="feature-item">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                </svg>
+                <span>Cardápio variado</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section id="cardapio" class="menu-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Nosso Cardápio</h2>
-          <p class="section-subtitle animate-on-scroll">Clique na imagem para ampliar</p>
-          <div class="cardapio-carousel-wrapper animate-on-scroll">
-            <button @click="prevCardapioImage" class="cardapio-nav prev" aria-label="Imagem Anterior">❮</button>
-            <div class="cardapio-image-container">
-              <transition name="fade" mode="out-in">
-                <img :key="cardapioImages[cardapioCurrentIndex]" :src="cardapioImages[cardapioCurrentIndex]"
-                  alt="Item do cardápio" class="cardapio-image"
-                  @click="openModal(cardapioImages, cardapioCurrentIndex)" />
-              </transition>
+            <div class="events-cta">
+              <p class="events-cta-text">Consulte-nos para mais detalhes</p>
+              <a href="tel:+551132081804" class="btn-events">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+                (11) 3208-1804
+              </a>
             </div>
-            <button @click="nextCardapioImage" class="cardapio-nav next" aria-label="Próxima Imagem">❯</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="nossa-casa" class="about-section section">
-        <div class="container about-content">
-          <div class="about-image animate-on-scroll">
-            <transition name="fade" mode="out-in">
-              <img :key="currentSlide.imageSrc" :src="currentSlide.imageSrc" :alt="currentSlide.title">
+    <!-- Seção Encomendas -->
+    <!-- Seção Encomendas -->
+    <section class="orders-section">
+      <div class="orders-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-tag">Para suas festas</span>
+          <h2 class="section-heading">Encomendas Especiais</h2>
+          <p class="section-description">
+            Bolos, salgados e doces para tornar sua festa inesquecível
+          </p>
+        </div>
+
+        <div class="orders-carousel" data-aos="fade-up">
+          <button @click="prevEncomendaImage" class="carousel-btn carousel-btn-prev">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <div class="orders-image-wrapper">
+            <transition name="slide-fade" mode="out-in">
+              <img :key="encomendaImages[encomendaCurrentIndex]" :src="encomendaImages[encomendaCurrentIndex]"
+                alt="Opções de encomenda" class="orders-image"
+                @click="openModal(encomendaImages, encomendaCurrentIndex)" />
             </transition>
-            <button @click="prevSlide" class="carousel-nav prev" aria-label="Slide Anterior">❮</button>
-            <button @click="nextSlide" class="carousel-nav next" aria-label="Próximo Slide">❯</button>
-          </div>
-          <div class="about-text animate-on-scroll">
-            <transition name="fade" mode="out-in">
-              <div :key="currentSlide.title">
-                <h2 class="section-title">{{ currentSlide.title }}</h2>
-                <p>{{ currentSlide.text }}</p>
-              </div>
-            </transition>
-          </div>
-        </div>
-      </section>
-
-      <section id="eventos" class="events-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sediamos Seu Evento</h2>
-          <div class="events-content-wrapper animate-on-scroll">
-            <div class="events-image-container">
-              <img :src="imgEventos" alt="Salão de eventos da padaria Famalicense" class="events-image" />
-            </div>
-            <div class="events-text">
-              <p>Para maiores detalhes, converse com a gerência.</p>
-              <p class="events-phone">Consulte-nos: <a href="tel:+551132081804">(11) 3208-1804</a></p>
-              <p class="events-highlight">Economize! Não cobramos o espaço, apenas o consumo.</p>
+            <div class="orders-image-counter">
+              {{ encomendaCurrentIndex + 1 }} / {{ encomendaImages.length }}
             </div>
           </div>
-        </div>
-      </section>
 
-      <section id="encomendas" class="encomendas-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Encomendas para Festas</h2>
-          <p class="section-subtitle animate-on-scroll">Preços sujeitos a alteração sem aviso prévio. Confirmar os
-            preços antes de nos visitar ou de encomendar algo.</p>
-          <div class="encomendas-carousel-wrapper animate-on-scroll">
-            <button @click="prevEncomendaImage" class="cardapio-nav prev" aria-label="Encomenda Anterior">❮</button>
-            <div class="cardapio-image-container">
-              <transition name="fade" mode="out-in">
-                <img :key="encomendaImages[encomendaCurrentIndex]" :src="encomendaImages[encomendaCurrentIndex]"
-                  alt="Opção de encomenda para festa" class="cardapio-image"
-                  @click="openModal(encomendaImages, encomendaCurrentIndex)" />
-              </transition>
-            </div>
-            <button @click="nextEncomendaImage" class="cardapio-nav next" aria-label="Próxima Encomenda">❯</button>
-          </div>
-          <p class="section-subtitle animate-on-scroll" style="margin-top: 20px; font-size: 0.9rem;">( CLICK NA IMAGEM
-            PARA AMPLIAR )</p>
+          <button @click="nextEncomendaImage" class="carousel-btn carousel-btn-next">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
         </div>
-      </section>
 
-      <section id="faca-seu-pedido" class="order-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Faça seu pedido</h2>
-          <p class="section-subtitle animate-on-scroll">Peça online de forma rápida e prática, ou entre em contato
-            conosco.</p>
-          <div class="order-options animate-on-scroll">
+        <div class="orders-info">
+          <p class="orders-note">Clique na imagem para ampliar</p>
+          <p class="orders-disclaimer">
+            * Preços sujeitos a alteração sem aviso prévio. Confirme os valores antes de encomendar.
+          </p>
+          <a href="tel:+551132081804" class="btn-orders">
+            Fazer Encomenda
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção CTA - Fazer Pedido -->
+    <section class="cta-section">
+      <div class="cta-container" data-aos="zoom-in">
+        <div class="cta-content">
+          <h2 class="cta-heading">Pronto para saborear?</h2>
+          <p class="cta-text">
+            Peça online de forma rápida e prática, ou entre em contato conosco
+          </p>
+          <div class="cta-buttons">
             <a href="https://famalicense.bedelivery.com.br/" target="_blank" rel="noopener noreferrer"
-              class="cta-button">
+              class="btn-cta-primary">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+              </svg>
               Pedir Online
             </a>
-            <p class="phone-contact">
-              ou ligue para nós <br>
-              <a href="tel:+551132081804" class="phone-number">(11) 3208-1804</a>
-            </p>
+            <a href="tel:+551132081804" class="btn-cta-secondary">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+              Ligar Agora
+            </a>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="localizacao" class="location-section section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Nossa Localização</h2>
-          <p class="section-subtitle animate-on-scroll">Venha nos visitar e sentir o cheirinho de pão quente!</p>
-          <div class="location-content">
-            <div class="address-info animate-on-scroll">
-              <h3>Padaria Famalicense</h3>
-              <p>R. Climaco barbosa, 46 - Cambuci</p>
-              <p>São Paulo, SP - CEP 01523-000</p>
-              <p><strong>Horário de Funcionamento:</strong></p>
-              <p>Segunda a Quinta: 6h às 22h</p>
-              <p>Sexta e Sábado: 6h às 00h</p>
-              <p>Domingos e feriados: 6h às 22h</p>
+    <!-- Seção Localização e Contato -->
+    <section id="contato" class="contact-section">
+      <div class="contact-container">
+        <div class="section-header" data-aos="fade-up">
+          <span class="section-tag">Visite-nos</span>
+          <h2 class="section-heading">Nossa Localização</h2>
+          <p class="section-description">
+            Venha nos visitar e sentir o cheirinho de pão quente!
+          </p>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-info" data-aos="fade-right">
+            <div class="info-card">
+              <div class="info-icon">
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" />
+                </svg>
+              </div>
+              <div class="info-content">
+                <h3>Endereço</h3>
+                <p>R. Clímaco Barbosa, 46</p>
+                <p>Cambuci - São Paulo, SP</p>
+                <p>CEP 01523-000</p>
+              </div>
             </div>
-            <div class="map-container animate-on-scroll">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.886998888973!2d-46.6268440850708!3d-23.54048868468389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce58996d311409%3A0x3ca54d994927b91d!2sR.%20Cl%C3%ADmaco%20Barbosa%2C%2046%20-%20Cambuci%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001523-000!5e0!3m2!1spt-BR!2sus!4v1702738457942!5m2!1spt-BR!2sus"
-                width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            <div class="info-card">
+              <div class="info-icon">
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" />
+                </svg>
+              </div>
+              <div class="info-content">
+                <h3>Horário de Funcionamento</h3>
+                <p><strong>Segunda a Quinta:</strong> 6h às 22h</p>
+                <p><strong>Sexta e Sábado:</strong> 6h à 00h</p>
+                <p><strong>Domingos e Feriados:</strong> 6h às 22h</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">
+                <svg width="32" height="32" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                </svg>
+              </div>
+              <div class="info-content">
+                <h3>Telefone</h3>
+                <a href="tel:+551132081804" class="contact-phone">(11) 3208-1804</a>
+                <p class="contact-subtitle">Delivery e Encomendas</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
 
-    <footer class="main-footer-bottom">
-      <div class="container">
-        <p>© {{ new Date().getFullYear() }} Padaria Famalicense. Todos os direitos reservados.</p>
-        <div class="social-links">
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="Facebook">FB</a>
+          <div class="contact-map" data-aos="fade-left">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.886998888973!2d-46.6268440850708!3d-23.54048868468389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce58996d311409%3A0x3ca54d994927b91d!2sR.%20Cl%C3%ADmaco%20Barbosa%2C%2046%20-%20Cambuci%2C%20S%C3%A3o%20Paulo%20-%20SP%2C%2001523-000!5e0!3m2!1spt-BR!2sus!4v1702738457942!5m2!1spt-BR!2sus"
+              width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <img :src="imgLogo" alt="Famalicense" class="footer-logo" />
+            <h3>Padaria Famalicense</h3>
+            <p>Tradição e qualidade desde 1961</p>
+          </div>
+
+          <div class="footer-links">
+            <h4>Links Rápidos</h4>
+            <a href="#inicio" @click.prevent="scrollToSection('inicio')">Início</a>
+            <a href="#sobre" @click.prevent="scrollToSection('sobre')">Sobre</a>
+            <a href="#produtos" @click.prevent="scrollToSection('produtos')">Produtos</a>
+            <a href="#cardapio" @click.prevent="scrollToSection('cardapio')">Cardápio</a>
+          </div>
+
+          <div class="footer-contact">
+            <h4>Contato</h4>
+            <a href="tel:+551132081804">(11) 3208-1804</a>
+            <p>R. Clímaco Barbosa, 46</p>
+            <p>Cambuci - São Paulo, SP</p>
+          </div>
+
+          <div class="footer-hours">
+            <h4>Horários</h4>
+            <p>Seg - Qui: 6h às 22h</p>
+            <p>Sex - Sáb: 6h à 00h</p>
+            <p>Dom e Feriados: 6h às 22h</p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; {{ new Date().getFullYear() }} Padaria Famalicense. Todos os direitos reservados.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/famalicense/" aria-label="Instagram" target="_blank">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
 
-    <div v-if="isModalOpen" class="modal-backdrop" @click="closeModal">
-      <button @click.stop="prevModalImage" class="modal-nav prev" aria-label="Anterior">❮</button>
+    <!-- Modal de Imagem -->
+    <div v-if="isModalOpen" class="modal-overlay" @click="closeModal">
+      <button @click.stop="closeModal" class="modal-close">
+        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <button @click.stop="prevModalImage" class="modal-nav modal-nav-prev">
+        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
       <div class="modal-content" @click.stop>
-        <transition name="fade" mode="out-in">
-          <img :key="modalImageSrc" :src="modalImageSrc" alt="Imagem ampliada" class="modal-image">
+        <transition name="modal-fade" mode="out-in">
+          <img :key="modalImageSrc" :src="modalImageSrc" alt="Imagem ampliada" class="modal-img" />
         </transition>
       </div>
-      <button @click.stop="nextModalImage" class="modal-nav next" aria-label="Próximo">❯</button>
-      <button @click="closeModal" class="modal-close-button" aria-label="Fechar modal">×</button>
+
+      <button @click.stop="nextModalImage" class="modal-nav modal-nav-next">
+        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 
-// --- (Todos os imports de imagem permanecem os mesmos) ---
+// Imports de imagens
 import imgLogo from '../assets/logo.png'
 import imgPadaria from '../assets/padaria1.png';
 import imgConfeitaria from '../assets/confeitaria1.png';
@@ -237,60 +596,78 @@ import imgEncomenda2 from '../assets/encomenda2.jpg'
 import imgEncomenda3 from '../assets/encomenda3.jpg'
 import imgEncomenda4 from '../assets/encomenda4.jpg'
 
-
-// --- LÓGICA GERAL E SCROLL ---
+// Estado
 const isScrolled = ref(false);
-const activeSection = ref('home');
-let animationObserver = null;
-let scrollSpyObserver = null;
-
-// --- LÓGICA DO MENU MOBILE ---
 const isMobileMenuOpen = ref(false);
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value;
-};
-const scrollToAndCloseMenu = (sectionId) => {
-  scrollTo(sectionId);
-  isMobileMenuOpen.value = false;
-};
-
-// --- (Restante do script permanece o mesmo) ---
-const handleScroll = () => { isScrolled.value = window.scrollY > 50; };
-const scrollTo = (sectionId) => {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    window.scrollTo({ top: element.offsetTop - 80, behavior: 'smooth' });
-  }
-};
 const currentSlideIndex = ref(0);
-let autoplayInterval = null;
-const nossaCasaSlides = ref([
-  { title: 'Nossa Casa', text: 'Somos diversificados e populares. Atuamos como padaria, confeitaria, restaurante a la carte, self-service grill e pizzaria. Temos orgulho de nossa tradição, estamos no mesmo local desde 1961. Somos gratos ao bairro do Cambuci que nos acolheu durante todos estes anos, onde pudemos aprender, crescer e contribuir com nossos valores e tradições representados por nossos produtos e serviços. O nome FAMALICENSE é uma homenagem aos nascidos na cidade  de Vila Nova Famalicão localizada na região Norte de Portugal, mais que uma simples padaria, com um novo conceito, une tradição e conveniência, trazendo ao bairro do Cambuci um ambiente descontraido e informal oferecendo aos seus clientes uma grande variedade de opções para saborear.', imageSrc: imgLogo },
-  { title: 'Padaria', text: 'Grande variedade de pães: francês tradicional, integral, c/ torresmo, multi-grãos, italiano, folar português, de batata, de mandioquinha e muitos outros.', imageSrc: imgPadaria },
-  { title: 'Confeitaria', text: 'Tudo feito com amor e dedicação e com uma equipe bem entrosada, também oferecemos uma grande variedade de bolos, doces e salgados com estilo bem tradicional.', imageSrc: imgConfeitaria },
-  { title: 'Pizzaria', text: 'Temos uma grande variedade de pizzas. Um ambiente gostoso e muito agradável no piso superior para receber sua família e seus amigos. Venha conferir!', imageSrc: imgPizzaria },
-  { title: 'Restaurante', text: 'Oferecemos aos nossos clientes a opção de um almoço a la carte tradicional com os principais pratos populares da gastronomia de São Paulo ou em nosso piso superior a opção do Self-Service Grill.', imageSrc: imgRestaurante }
-]);
-const currentSlide = computed(() => nossaCasaSlides.value[currentSlideIndex.value]);
-const nextSlide = () => { currentSlideIndex.value = (currentSlideIndex.value + 1) % nossaCasaSlides.value.length; };
-const prevSlide = () => { currentSlideIndex.value = (currentSlideIndex.value - 1 + nossaCasaSlides.value.length) % nossaCasaSlides.value.length; };
-const startAutoplay = () => { stopAutoplay(); autoplayInterval = setInterval(nextSlide, 7000); };
-const stopAutoplay = () => { if (autoplayInterval) clearInterval(autoplayInterval); };
+
+// Cardápio
 const cardapioImages = ref([
   cardapioImg1, cardapioImg2, cardapioImg3, cardapioImg4, cardapioImg5, cardapioImg6,
   cardapioImg7, cardapioImg8, cardapioImg9, cardapioImg10, cardapioImg11, cardapioImg12
 ]);
 const cardapioCurrentIndex = ref(0);
-const nextCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value + 1) % cardapioImages.value.length; };
-const prevCardapioImage = () => { cardapioCurrentIndex.value = (cardapioCurrentIndex.value - 1 + cardapioImages.value.length) % cardapioImages.value.length; };
+
+// Encomendas
 const encomendaImages = ref([imgEncomenda1, imgEncomenda2, imgEncomenda3, imgEncomenda4]);
 const encomendaCurrentIndex = ref(0);
-const nextEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value + 1) % encomendaImages.value.length; };
-const prevEncomendaImage = () => { encomendaCurrentIndex.value = (encomendaCurrentIndex.value - 1 + encomendaImages.value.length) % encomendaImages.value.length; };
+
+// Modal
 const isModalOpen = ref(false);
 const modalImageSrc = ref('');
 const activeModalImages = ref([]);
 const activeModalIndex = ref(0);
+
+// Funções de navegação
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+  if (isMobileMenuOpen.value) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = '';
+  }
+};
+
+const scrollToSection = (sectionId) => {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    const headerOffset = 80;
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+  isMobileMenuOpen.value = false;
+  document.body.style.overflow = '';
+};
+
+const setCurrentSlide = (index) => {
+  currentSlideIndex.value = index;
+  scrollToSection('sobre');
+};
+
+// Cardápio navigation
+const nextCardapioImage = () => {
+  cardapioCurrentIndex.value = (cardapioCurrentIndex.value + 1) % cardapioImages.value.length;
+};
+
+const prevCardapioImage = () => {
+  cardapioCurrentIndex.value = (cardapioCurrentIndex.value - 1 + cardapioImages.value.length) % cardapioImages.value.length;
+};
+
+// Encomendas navigation
+const nextEncomendaImage = () => {
+  encomendaCurrentIndex.value = (encomendaCurrentIndex.value + 1) % encomendaImages.value.length;
+};
+
+const prevEncomendaImage = () => {
+  encomendaCurrentIndex.value = (encomendaCurrentIndex.value - 1 + encomendaImages.value.length) % encomendaImages.value.length;
+};
+
+// Modal functions
 const openModal = (imageArray, startIndex) => {
   activeModalImages.value = imageArray;
   activeModalIndex.value = startIndex;
@@ -298,871 +675,59 @@ const openModal = (imageArray, startIndex) => {
   isModalOpen.value = true;
   document.body.style.overflow = 'hidden';
 };
+
 const closeModal = () => {
   isModalOpen.value = false;
   document.body.style.overflow = '';
 };
+
 const nextModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value + 1) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
+
 const prevModalImage = () => {
   if (!isModalOpen.value) return;
   activeModalIndex.value = (activeModalIndex.value - 1 + activeModalImages.value.length) % activeModalImages.value.length;
   modalImageSrc.value = activeModalImages.value[activeModalIndex.value];
 };
+
+// Scroll handler
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50;
+};
+
+// Keyboard handler
 const handleKeydown = (e) => {
   if (!isModalOpen.value) return;
   if (e.key === 'Escape') closeModal();
   if (e.key === 'ArrowRight') nextModalImage();
   if (e.key === 'ArrowLeft') prevModalImage();
 };
+
+// Lifecycle
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   window.addEventListener('keydown', handleKeydown);
-  const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
-  animationObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        animationObserver.unobserve(entry.target);
-      }
+
+  // AOS initialization (if using AOS library)
+  if (typeof window !== 'undefined' && window.AOS) {
+    window.AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100
     });
-  }, { threshold: 0.1 });
-  elementsToAnimate.forEach(el => animationObserver.observe(el));
-  const sections = document.querySelectorAll('.section');
-  scrollSpyObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-        activeSection.value = entry.target.id;
-      }
-    });
-  }, { threshold: [0.5, 0.9] });
-  sections.forEach(section => scrollSpyObserver.observe(section));
-  startAutoplay();
+  }
 });
+
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll);
   window.removeEventListener('keydown', handleKeydown);
-  if (animationObserver) animationObserver.disconnect();
-  if (scrollSpyObserver) scrollSpyObserver.disconnect();
-  stopAutoplay();
+  document.body.style.overflow = '';
 });
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@700;800&display=swap');
-
-/* ... (Todo o CSS anterior permanece o mesmo até o header) ... */
-.bakery-landing-page {
-  --primary-color: #FFC107;
-  --accent-color: #D32F2F;
-  --dark-color: #1c1c1c;
-  --light-color: #FFF;
-  --bg-light-cream: #FFF8E1;
-  --text-color: #5D4037;
-  --font-headings: 'Montserrat', sans-serif;
-  --font-body: 'Lato', sans-serif;
-  font-family: var(--font-body);
-  color: var(--text-color);
-  background-color: var(--light-color);
-  line-height: 1.6;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.section {
-  padding: 80px 0;
-}
-
-/* --- ESTILOS DO HEADER --- */
-.main-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  transition: background-color 0.4s ease, padding 0.4s ease;
-  padding: 20px 0;
-}
-
-.main-header.scrolled {
-  background-color: rgba(255, 248, 225, 0.98);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 10px 0;
-}
-
-.main-header.mobile-menu-active {
-  background-color: rgba(255, 248, 225, 1);
-}
-
-/* Fundo sólido quando menu aberto */
-.main-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-family: var(--font-headings);
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: var(--dark-color);
-}
-
-.desktop-nav ul {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
-}
-
-.desktop-nav ul li a {
-  color: var(--dark-color);
-  text-decoration: none;
-  margin: 0 15px;
-  font-weight: 700;
-  position: relative;
-  padding: 5px 0;
-  transition: color 0.3s ease;
-  font-size: 0.9rem;
-}
-
-.desktop-nav ul li a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: var(--accent-color);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 0.4s ease;
-}
-
-.desktop-nav ul li a:hover,
-.desktop-nav ul li a.active {
-  color: var(--accent-color);
-}
-
-.desktop-nav ul li a:hover::after,
-.desktop-nav ul li a.active::after {
-  transform: scaleX(1);
-}
-
-/* --- BOTÃO HAMBÚRGUER E MENU MOBILE --- */
-.hamburger-button {
-  display: none;
-  /* Oculto por padrão */
-}
-
-/* ... (Restante do CSS permanece o mesmo) ... */
-.section-title {
-  font-family: var(--font-headings);
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-  color: var(--dark-color);
-}
-
-.section-subtitle {
-  text-align: center;
-  font-size: 1.1rem;
-  max-width: 800px;
-  margin: 0 auto 60px auto;
-}
-
-.animate-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.animate-on-scroll.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.hero-section {
-  height: 100vh;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=2869&auto=format&fit=crop') no-repeat center center/cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: var(--light-color);
-  padding: 0 20px;
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hero-content h1 {
-  font-family: var(--font-headings);
-  font-size: 4rem;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.hero-content p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  max-width: 700px;
-}
-
-.cta-button {
-  background-color: var(--primary-color);
-  color: var(--dark-color);
-  border: none;
-  padding: 15px 30px;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.cta-button:hover {
-  background-color: #ffca28;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.news-section {
-  background-color: var(--dark-color);
-  color: var(--light-color);
-}
-
-.news-section .section-title {
-  color: var(--light-color);
-}
-
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 50px;
-  align-items: stretch;
-  /* CORREÇÃO: Garante que todos os cards na mesma linha tenham a mesma altura */
-}
-
-.news-item {
-  display: flex;
-  /* Adicionado */
-  flex-direction: column;
-  /* Adicionado */
-  text-align: center;
-  padding: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.news-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  transform: translateY(-5px);
-}
-
-.news-item svg {
-  width: 100%;
-  height: 50px;
-  fill: var(--primary-color);
-  margin-bottom: 20px;
-}
-
-.news-item h3 {
-  font-family: var(--font-headings);
-  color: var(--primary-color);
-  margin-bottom: 15px;
-  font-size: 1.8rem;
-}
-
-.news-item p {
-  flex-grow: 1;
-  /* Adicionado: Faz o parágrafo principal ocupar o espaço extra, empurrando os detalhes para o rodapé do card */
-  margin-bottom: 20px;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.7;
-}
-
-.news-details p {
-  flex-grow: 0;
-  /* Garante que este parágrafo não cresça */
-  margin-bottom: 5px;
-  font-size: 1rem;
-}
-
-.news-details a {
-  color: var(--light-color);
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.news-details a:hover {
-  color: var(--primary-color);
-}
-
-.menu-section {
-  background-color: var(--bg-light-cream);
-}
-
-.cardapio-carousel-wrapper {
-  position: relative;
-  max-width: 450px;
-  margin: 0 auto;
-}
-
-.cardapio-image-container {
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  background-color: var(--light-color);
-  height: 600px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cardapio-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.cardapio-image:hover {
-  transform: scale(1.05);
-}
-
-.cardapio-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.4);
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 10px 15px;
-  border-radius: 50%;
-  z-index: 10;
-  transition: background-color 0.3s ease;
-  font-size: 1.5rem;
-  line-height: 1;
-  width: 50px;
-  height: 50px;
-}
-
-.cardapio-nav:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.cardapio-nav.prev {
-  left: -60px;
-}
-
-.cardapio-nav.next {
-  right: -60px;
-}
-
-.about-section {
-  background-color: var(--light-color);
-}
-
-.about-content {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-}
-
-.about-image {
-  flex: 1;
-  position: relative;
-}
-
-.about-image img {
-  width: 100%;
-  height: 450px;
-  object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  display: block;
-}
-
-.about-text {
-  flex: 1;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.4);
-  color: white;
-  border: none;
-  cursor: pointer;
-  padding: 10px 15px;
-  border-radius: 50%;
-  z-index: 10;
-  transition: background-color 0.3s ease;
-  font-size: 1.5rem;
-  line-height: 1;
-  width: 50px;
-  height: 50px;
-}
-
-.carousel-nav:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.carousel-nav.prev {
-  left: 15px;
-}
-
-.carousel-nav.next {
-  right: 15px;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.events-section {
-  background-color: var(--bg-light-cream);
-}
-
-.events-content-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  background-color: var(--light-color);
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.events-image-container {
-  flex: 1;
-  max-width: 50%;
-}
-
-.events-image {
-  width: 100%;
-  border-radius: 10px;
-  display: block;
-}
-
-.events-text {
-  flex: 1;
-  text-align: center;
-}
-
-.events-text p {
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-.events-phone {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.events-phone a {
-  color: var(--accent-color);
-  text-decoration: none;
-  transition: opacity 0.3s;
-}
-
-.events-phone a:hover {
-  opacity: 0.8;
-}
-
-.events-highlight {
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-.encomendas-section {
-  background-color: var(--dark-color);
-}
-
-.encomendas-section .section-title,
-.encomendas-section .section-subtitle {
-  color: var(--light-color);
-}
-
-.encomendas-carousel-wrapper {
-  position: relative;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.order-section {
-  background-color: var(--bg-light-cream);
-  text-align: center;
-}
-
-.order-options {
-  margin-top: -20px;
-}
-
-.phone-contact {
-  margin-top: 25px;
-  font-size: 1.1rem;
-  color: var(--text-color);
-}
-
-.phone-number {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: var(--dark-color);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.phone-number:hover {
-  color: var(--accent-color);
-}
-
-.location-section {
-  background-color: var(--light-color);
-}
-
-.location-content {
-  display: flex;
-  gap: 40px;
-  margin-top: 40px;
-}
-
-.address-info {
-  flex: 1;
-}
-
-.address-info h3 {
-  font-family: var(--font-headings);
-  margin-bottom: 15px;
-}
-
-.address-info p {
-  margin-bottom: 10px;
-}
-
-.map-container {
-  flex: 1.5;
-  height: 400px;
-}
-
-.map-container iframe {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.main-footer-bottom {
-  background-color: var(--dark-color);
-  color: var(--light-color);
-  padding: 20px 0;
-  text-align: center;
-}
-
-.main-footer-bottom .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.social-links a {
-  color: var(--light-color);
-  text-decoration: none;
-  margin-left: 15px;
-  font-weight: 700;
-  transition: color 0.3s ease;
-}
-
-.social-links a:hover {
-  color: var(--primary-color);
-}
-
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-}
-
-.modal-content {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 40px;
-}
-
-.modal-image {
-  display: block;
-  max-width: 90vw;
-  max-height: 85vh;
-  width: auto;
-  height: auto;
-  border-radius: 5px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-}
-
-.modal-close-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: white;
-  border: 2px solid var(--dark-color);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--dark-color);
-  cursor: pointer;
-  line-height: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  z-index: 2010;
-}
-
-.modal-close-button:hover {
-  transform: scale(1.1) rotate(90deg);
-  background-color: var(--primary-color);
-}
-
-.modal-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(255, 255, 255, 0.1);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-  cursor: pointer;
-  border-radius: 50%;
-  z-index: 2010;
-  transition: background-color 0.3s ease;
-  font-size: 2rem;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-nav:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.modal-nav.prev {
-  left: 20px;
-}
-
-.modal-nav.next {
-  right: 20px;
-}
-
-/* --- RESPONSIVIDADE E MENU MOBILE --- */
-@media (max-width: 1024px) {
-
-  /* Ponto de quebra para o menu hambúrguer */
-  .desktop-nav {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    /* Começa fora da tela */
-    width: 300px;
-    height: 100vh;
-    background-color: var(--bg-light-cream);
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    z-index: 1001;
-    padding-top: 100px;
-  }
-
-  .desktop-nav.is-active {
-    right: 0;
-    /* Desliza para dentro da tela */
-  }
-
-  .desktop-nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .desktop-nav ul li a {
-    font-size: 1.2rem;
-  }
-
-  .hamburger-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 24px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1002;
-    /* Fica acima do menu */
-  }
-
-  .hamburger-line {
-    width: 30px;
-    height: 3px;
-    background-color: var(--dark-color);
-    border-radius: 10px;
-    transition: all 0.3s linear;
-    position: relative;
-    transform-origin: 1px;
-  }
-
-  .hamburger-button.is-active .hamburger-line:nth-child(1) {
-    transform: rotate(45deg);
-  }
-
-  .hamburger-button.is-active .hamburger-line:nth-child(2) {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  .hamburger-button.is-active .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg);
-  }
-}
-
-@media (max-width: 992px) {
-
-  .cardapio-nav.prev,
-  .encomendas-carousel-wrapper .cardapio-nav.prev {
-    left: 10px;
-  }
-
-  .cardapio-nav.next,
-  .encomendas-carousel-wrapper .cardapio-nav.next {
-    right: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .hero-content h1 {
-    font-size: 2.8rem;
-  }
-
-  .main-header .container {
-    flex-direction: row;
-  }
-
-  /* Garante que logo e menu fiquem na mesma linha */
-  .news-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .events-content-wrapper {
-    flex-direction: column;
-  }
-
-  .events-image-container {
-    max-width: 100%;
-  }
-
-  .events-text {
-    margin-top: 30px;
-  }
-
-  .about-content,
-  .location-content,
-  .main-footer-bottom .container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .about-text {
-    height: auto;
-    margin-top: 30px;
-  }
-
-  .cardapio-image-container {
-    height: 400px;
-  }
-
-  .cardapio-carousel-wrapper {
-    max-width: 100%;
-  }
-
-  .cardapio-nav.prev {
-    left: 5px;
-  }
-
-  .cardapio-nav.next {
-    right: 5px;
-  }
-
-  .modal-nav {
-    width: 45px;
-    height: 45px;
-    font-size: 1.5rem;
-  }
-
-  .modal-nav.prev {
-    left: 5px;
-  }
-
-  .modal-nav.next {
-    right: 5px;
-  }
-}
+@import '../styles/landing.css';
 </style>
